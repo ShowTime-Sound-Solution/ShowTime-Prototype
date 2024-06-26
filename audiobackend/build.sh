@@ -12,3 +12,5 @@ cmake ..
 make
 mv showtime-audio-backend ..
 cd ..
+sudo rm -rf rtaudio
+sudo rm -rf build
