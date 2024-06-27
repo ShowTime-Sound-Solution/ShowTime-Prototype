@@ -20,7 +20,11 @@ if [ -d "/Library/Audio/Plug-Ins/HAL/BlackHole.driver" ]; then
     echo "Drivers already installed"
 else
     echo "Installing drivers..."
-    cp drivers/BlackHole.driver/ /Library/Audio/Plug-Ins/HAL/
+    cd drivers
+    mkdir ShowTime.driver
+    cd ..
+    cp -r drivers/BlackHole.driver/ drivers/ShowTime.driver/
+    mv drivers/BlackHole.driver/ /Library/Audio/Plug-Ins/HAL/
 fi
 sudo killall -9 coreaudiod
 echo "Done"
