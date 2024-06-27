@@ -1,4 +1,5 @@
 #include "RtAudio.h"
+#include <CoreAudio/CoreAudio.h>
 #include <iostream>
 #include <cstdlib>
 #include <sys/stat.h>
@@ -66,7 +67,7 @@ int main() {
         exit(0);
     }
     RtAudio::StreamParameters parameters;
-    parameters.deviceId = 132;
+    parameters.deviceId = 133;
     parameters.nChannels = 2;
     parameters.firstChannel = 0;
     unsigned int sampleRate = 44100;
