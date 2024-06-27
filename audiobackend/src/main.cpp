@@ -65,14 +65,18 @@ int main() {
     std::cout << "\nPlaying ... press 'q' and <enter> to quit.\n";
 
     //enter while quite and p while add gain
+    GainEffect *gainEffect = nullptr;
+    for (auto &effect : ae.getEffects()) {
+        gainEffect = dynamic_cast<GainEffect *>(effect.get());
+    }
     while (std::cin.get(input)) {
-        if (input == 'p') {
-            ae.setGain(ae.getGain() + 0.1f);
-            std::cout << "Gain: " << ae.getGain() << std::endl;
+        if (input == 'p' && gainEffect != nullptr) {
+            gainEffect->setGain(gainEffect->getGain() + 0.1f);
+            std::cout << "Gain: " << gainEffect->getGain() << std::endl;
         }
-        if (input == 'm') {
-            ae.setGain(ae.getGain() - 0.1f);
-            std::cout << "Gain: " << ae.getGain() << std::endl;
+        if (input == 'm' && gainEffect != nullptr) {
+            gainEffect->setGain(gainEffect->getGain() - 0.1f);
+            std::cout << "Gain: " << gainEffect->getGain() << std::endl;
         }
         if (input == 'q') {
             break;

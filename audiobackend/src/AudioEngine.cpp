@@ -15,6 +15,7 @@ AudioEngine::AudioEngine() {
     sampleRate = adc.getDeviceInfo(outputParams.deviceId).preferredSampleRate;
 
     std::cout << "Default output device: " << adc.getDeviceInfo(outputParams.deviceId).name << std::endl;
+    loadEffects();
 }
 
 AudioEngine::~AudioEngine() {
@@ -63,17 +64,11 @@ void AudioEngine::stop() {
     adc.stopStream();
 }
 
-void AudioEngine::setGain(float gain) {
-    this->gain = gain;
-}
-
 int AudioEngine::input(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames, double streamTime, RtAudioStreamStatus status, void *userData) {
     AudioEngine *engine = (AudioEngine *)userData;
     float *in = (float *)inputBuffer;
     float *out = (float *)outputBuffer;
-    for (int i = 0; i < nBufferFrames * 2; i++) {
-        out[i] = in[i] * engine->gain;
-    }
+    engine->processEffects(in, out, nBufferFrames);
     return 0;
 }
 
@@ -99,4 +94,22 @@ void AudioEngine::changeOutputDevice(int numDevice) {
     std::cout << "Output device changed to: " << adc.getDeviceInfo(deviceId).name << " with sample rate: " << sampleRate << std::endl;
 }
 
+void AudioEngine::loadEffects() {
+    effects.push_back(std::make_unique<GainEffect>(0));
+}
 
+void AudioEngine::processEffects(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) {
+    float *tmpBuffer = new float[nBufferFrames * 2];
+    for (auto &effect : effects) {
+        effect->process(inputBuffer, tmpBuffer, nBufferFrames * 2);
+        std::copy(tmpBuffer, tmpBuffer + nBufferFrames * 2, inputBuffer);
+    }
+    delete[] tmpBuffer;
+    for (unsigned int i = 0; i < nBufferFrames * 2; i++) {
+        outputBuffer[i] = inputBuffer[i];
+    }
+}
+
+std::vector<std::unique_ptr<IEffect>> &AudioEngine::getEffects() {
+    return effects;
+}

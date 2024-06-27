@@ -16,7 +16,10 @@ target_sources(showtime-audio-backend
         PRIVATE
         src/main.cpp
         src/AudioEngine.cpp
-        src/AudioEngine.hpp)
+        src/AudioEngine.hpp
+        src/Effects/IEffect.hpp
+        src/Effects/AEffect.hpp
+        src/Effects/GainEffect.hpp)
 
 find_package(RtAudio REQUIRED)
 target_link_libraries(showtime-audio-backend
