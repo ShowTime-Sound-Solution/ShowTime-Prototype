@@ -12,6 +12,8 @@ AudioEngine::AudioEngine() {
     outputParams.nChannels = 2;
     outputParams.firstChannel = 0;
 
+    sampleRate = adc.getDeviceInfo(outputParams.deviceId).preferredSampleRate;
+
     std::cout << "Default output device: " << adc.getDeviceInfo(outputParams.deviceId).name << std::endl;
 }
 
@@ -85,13 +87,16 @@ void AudioEngine::changeOutputDevice(int numDevice) {
             break;
         }
     }
+    std::cout << "Changing output device to: " << adc.getDeviceInfo(deviceId).name << std::endl;
     adc.closeStream();
     auto device = adc.getDeviceInfo(deviceId);
     outputParams.deviceId = device.ID;
     outputParams.nChannels = device.outputChannels;
     outputParams.firstChannel = 0;
+    sampleRate = device.preferredSampleRate;
     adc.openStream(&outputParams, &inputParams, RTAUDIO_FLOAT32, sampleRate, &bufferFrames, &input, this);
     adc.startStream();
+    std::cout << "Output device changed to: " << adc.getDeviceInfo(deviceId).name << " with sample rate: " << sampleRate << std::endl;
 }
 
 
