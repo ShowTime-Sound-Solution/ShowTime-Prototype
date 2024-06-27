@@ -1,15 +1,10 @@
-#include "RtAudio.h"
-#include <CoreAudio/CoreAudio.h>
+#include "AudioEngine.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <sys/stat.h>
 
-bool already_draw = false;
-
-float gain = 1.0f;
-
 // Callback function to process audio data
-int input(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
+/*int input(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
           double streamTime, RtAudioStreamStatus status, void *userData) {
     if (status)
         std::cout << "Stream overflow detected!" << std::endl;
@@ -58,74 +53,46 @@ int input(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
     }
 
     return 0;
-}
+}*/
 
 int main() {
-    RtAudio adc;
-    if (adc.getDeviceCount() < 1) {
-        std::cout << "\nNo audio devices found!\n";
-        exit(0);
-    }
-    RtAudio::StreamParameters parameters;
-    parameters.deviceId = 133;
-    parameters.nChannels = 2;
-    parameters.firstChannel = 0;
-    unsigned int sampleRate = 44100;
-    unsigned int bufferFrames = 256; // 256 sample frames
+    AudioEngine ae;
 
-    RtAudio::StreamParameters out;
-    out.deviceId = 129;
-    out.nChannels = 2;
-    out.firstChannel = 0;
-
-    std::cout << "Default input device: " << adc.getDeviceInfo(parameters.deviceId).name << " " << parameters.deviceId << std::endl;
-
-    //list all available devices
-    auto devices = adc.getDeviceIds();
-
-    for (auto device : devices) {
-        std::cout << "Device: " << adc.getDeviceInfo(device).name << " " << device << " " << adc.getDeviceInfo(device).inputChannels << " " << adc.getDeviceInfo(device).outputChannels << std::endl;
-    }
-
-    try {
-        adc.openStream(&out, &parameters, RTAUDIO_FLOAT32,
-                       sampleRate, &bufferFrames, &input, (void *)NULL);
-        adc.startStream();
-    }
-    catch (...) {
-        std::cout << "Error starting stream\n";
-        exit(0);
-    }
-
+    ae.start();
 
     char input;
 
-    std::cout << "\nPlaying ... press <enter> to quit.\n";
+    std::cout << "\nPlaying ... press 'q' and <enter> to quit.\n";
 
     //enter while quite and p while add gain
     while (std::cin.get(input)) {
         if (input == 'p') {
-            gain += 0.1f;
-            std::cout << "Gain: " << gain << std::endl;
+            ae.setGain(ae.getGain() + 0.1f);
+            std::cout << "Gain: " << ae.getGain() << std::endl;
         }
         if (input == 'm') {
-            gain -= 0.1f;
-            std::cout << "Gain: " << gain << std::endl;
+            ae.setGain(ae.getGain() - 0.1f);
+            std::cout << "Gain: " << ae.getGain() << std::endl;
         }
         if (input == 'q') {
             break;
         }
+        if (input == '1') {
+            ae.changeOutputDevice(1);
+        }
+        if (input == '2') {
+            ae.changeOutputDevice(2);
+        }
+        if (input == '3') {
+            ae.changeOutputDevice(3);
+        }
+        if (input == '4') {
+            ae.changeOutputDevice(4);
+        }
+        if (input == '5') {
+            ae.changeOutputDevice(5);
+        }
     }
 
-
-
-    try {
-        // Stop the stream
-        adc.stopStream();
-    }
-    catch (...) {
-        std::cout << "Error stopping stream\n";
-    }
-    if (adc.isStreamOpen()) adc.closeStream();
     return 0;
 }

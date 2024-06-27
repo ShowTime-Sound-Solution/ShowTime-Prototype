@@ -25,6 +25,7 @@ else
     cd ..
     cp -r drivers/BlackHole.driver/ drivers/ShowTime.driver/
     mv drivers/BlackHole.driver/ /Library/Audio/Plug-Ins/HAL/
+    mv drivers/ShowTime.driver/ drivers/BlackHole.driver/
 fi
 sudo killall -9 coreaudiod
 echo "Done"
