@@ -1,0 +1,87 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\pauli\\RiderProjects\\ShowTime-Prototype\\SoundPropagation\\SoundPropagation\\SoundPropagation.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\pauli\\RiderProjects\\ShowTime-Prototype\\SoundPropagation\\SoundPropagation\\SoundPropagation.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\pauli\\RiderProjects\\ShowTime-Prototype\\SoundPropagation\\SoundPropagation\\SoundPropagation.csproj",
+        "projectName": "SoundPropagation",
+        "projectPath": "C:\\Users\\pauli\\RiderProjects\\ShowTime-Prototype\\SoundPropagation\\SoundPropagation\\SoundPropagation.csproj",
+        "packagesPath": "C:\\Users\\pauli\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pauli\\RiderProjects\\ShowTime-Prototype\\SoundPropagation\\SoundPropagation\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\pauli\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Avalonia": {
+              "target": "Package",
+              "version": "[11.0.10, )"
+            },
+            "Avalonia.Desktop": {
+              "target": "Package",
+              "version": "[11.0.10, )"
+            },
+            "Avalonia.Diagnostics": {
+              "target": "Package",
+              "version": "[11.0.10, )"
+            },
+            "Avalonia.Fonts.Inter": {
+              "target": "Package",
+              "version": "[11.0.10, )"
+            },
+            "Avalonia.ReactiveUI": {
+              "target": "Package",
+              "version": "[11.0.10, )"
+            },
+            "Avalonia.Themes.Fluent": {
+              "target": "Package",
+              "version": "[11.0.10, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
