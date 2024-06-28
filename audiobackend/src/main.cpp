@@ -1,4 +1,5 @@
 #include "AudioEngine.hpp"
+#include "API/ApiClient.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <sys/stat.h>
@@ -56,9 +57,12 @@
 }*/
 
 int main() {
-    AudioEngine ae;
+    std::shared_ptr<AudioEngine> ae = std::make_shared<AudioEngine>();
+    ApiClient apiClient(ae);
 
-    ae.start();
+    apiClient.run();
+
+    ae->start();
 
     char input;
 
@@ -66,10 +70,10 @@ int main() {
 
     //enter while quite and p while add gain
     GainEffect *gainEffect = nullptr;
-    for (auto &effect : ae.getEffects()) {
+    for (auto &effect : ae->getEffects()) {
         gainEffect = dynamic_cast<GainEffect *>(effect.get());
     }
-    while (std::cin.get(input)) {
+    /*while (std::cin.get(input)) {
         if (input == 'p' && gainEffect != nullptr) {
             gainEffect->setGain(gainEffect->getGain() + 0.1f);
             std::cout << "Gain: " << gainEffect->getGain() << std::endl;
@@ -96,7 +100,7 @@ int main() {
         if (input == '5') {
             ae.changeOutputDevice(5);
         }
-    }
+    }*/
 
     return 0;
 }

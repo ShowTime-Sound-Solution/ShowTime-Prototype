@@ -136,3 +136,17 @@ void AudioEngine::processEffects(float *inputBuffer, float *outputBuffer, unsign
 std::vector<std::unique_ptr<IEffect>> &AudioEngine::getEffects() {
     return effects;
 }
+
+char *AudioEngine::getOutputDevicesAvailable() {
+    auto devices = adc.getDeviceIds();
+    auto buffer = new char[1024];
+    memset(buffer, 0, 1024);
+    for (int i = 0; i < devices.size(); i++) {
+        auto device = adc.getDeviceInfo(devices[i]);
+        strcat(buffer, std::to_string(i + 1).c_str());
+        strcat(buffer, " - ");
+        strcat(buffer, device.name.c_str());
+        strcat(buffer, "\n");
+    }
+    return buffer;
+}

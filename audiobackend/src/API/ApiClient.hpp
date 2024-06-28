@@ -9,15 +9,32 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <cstring>
+#include <unistd.h>
+#include "../AudioEngine.hpp"
 
 class ApiClient {
     public:
-        ApiClient();
+        ApiClient(std::shared_ptr<AudioEngine> audioEngine);
         ~ApiClient() = default;
 
         void run();
 
+        void send(const char *data) const {
+            write(_socket, data, strlen(data));
+        }
+
+        void stop() {
+            _running = false;
+        }
+
+        bool isRunning() const {
+            return _running;
+        }
+
     private:
         int _socket;
         struct sockaddr_in _serverAddress{};
+        bool _running = true;
+
+        std::shared_ptr<AudioEngine> _audioEngine;
 };

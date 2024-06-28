@@ -20,8 +20,10 @@ class AudioEngine {
 
         std::vector<std::unique_ptr<IEffect>> &getEffects();
 
+        char *getOutputDevicesAvailable();
+
     private:
-        RtAudio adc;
+        RtAudio adc = RtAudio(RtAudio::Api::MACOSX_CORE);
         RtAudio::StreamParameters inputParams;
         RtAudio::StreamParameters outputParams;
         bool already_draw = false;
