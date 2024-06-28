@@ -53,7 +53,7 @@ void AudioEngine::findShowTimeVirtualDevice() {
                 return;
             }
         }
-    #elif
+    #else
         for (auto device : devices) {
             std::cout << "Device: " << adc.getDeviceInfo(device).name << std::endl;
             if (adc.getDeviceInfo(device).name == "ShowTime_Virtual_Input_1.monitor") {

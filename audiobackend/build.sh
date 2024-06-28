@@ -1,5 +1,21 @@
+#install dep, if it is ubuntu it is apt, if it is fedora it is dnf
+OS_NAME=$(lsb_release -si)
+
+# Check if the distribution is Debian-based (uses apt)
+if [ "$OS_NAME" == "Debian" ] || [ "$OS_NAME" == "Ubuntu" ]; then
+  sudo apt-get install libpulse-dev autoconf automake libtool
+elif [ "$OS_NAME" == "CentOS" ] || [ "$OS_NAME" == "Red Hat Enterprise Linux" ]; then
+  sudo dnf install pulseaudio-libs-devel autoconf automake libtool
+else
+  echo "Unsupported distribution: $OS_NAME"
+  exit 1
+fi
 git clone https://github.com/thestk/rtaudio.git
 cd rtaudio
+if [ "$(uname)" != "Darwin" ]; then
+  ./autogen.sh
+  ./configure --with-pulse
+fi
 mkdir build
 cd build
 cmake ..
