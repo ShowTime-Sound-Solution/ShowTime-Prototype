@@ -14,7 +14,7 @@ ApiClient::ApiClient(std::shared_ptr<AudioEngine> audioEngine) : _audioEngine(st
 
     _serverAddress.sin_family = AF_INET;
     _serverAddress.sin_port = htons(6942);
-    _serverAddress.sin_addr.s_addr = inet_addr("10.17.72.153");
+    _serverAddress.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     if (connect(_socket, (struct sockaddr *)&_serverAddress, sizeof(_serverAddress)) == -1) {
         std::cerr << "Error connecting to server" << std::endl;
@@ -28,10 +28,6 @@ void ApiClient::run()
     while (_running) {
         memset(buffer, 0, sizeof(buffer));
         recv(_socket, buffer, 1024, 0);
-        std::cout << buffer << std::endl;
-        if (strcmp(buffer, "stop\n") == 0) {
-            stop();
-        }
         int num = atoi(buffer);
         if (num > 0) {
             _audioEngine->changeOutputDevice(num);
@@ -59,13 +55,24 @@ void ApiClient::run()
             }
             continue;
         }
-        std::cout << "Buffer: \"" << buffer[0] << "\"" << std::endl;
-        //check if buffer is "0"
-        if (buffer[0] == 0x01) {
-            std::cout << "Getting output devices" << std::endl;
-            char *devices = _audioEngine->getOutputDevicesAvailable();
-            send(devices);
-            continue;
-        }
+        handlingCommand(buffer);
     }
+}
+
+void ApiClient::handlingCommand(char *buffer)
+{
+    if (strcmp(buffer, "stop\n") == 0) {
+        stop();
+    }
+
+    if (buffer[0] == 0x30) {
+        sendOutputDevicesAvailable();
+        return;
+    }
+}
+
+void ApiClient::sendOutputDevicesAvailable()
+{
+    char *devices = _audioEngine->getOutputDevicesAvailable();
+    send(devices);
 }

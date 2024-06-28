@@ -31,10 +31,14 @@ class ApiClient {
             return _running;
         }
 
+        void handlingCommand(char *buffer);
+
     private:
         int _socket;
         struct sockaddr_in _serverAddress{};
         bool _running = true;
 
         std::shared_ptr<AudioEngine> _audioEngine;
+
+        void sendOutputDevicesAvailable();
 };
