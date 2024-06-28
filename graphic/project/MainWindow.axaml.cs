@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia;
 
 namespace project;
 
@@ -11,6 +12,9 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         this.KeyDown += MainWindow_KeyDown;
+        var client = new Client.Client();
+        
+        
     }
     
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
