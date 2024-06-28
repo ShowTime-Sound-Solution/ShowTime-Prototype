@@ -7,7 +7,9 @@ project(
 
 
 
-add_executable(showtime-audio-backend)
+add_executable(showtime-audio-backend
+        src/API/ApiClient.cpp
+        src/API/ApiClient.hpp)
 
 target_compile_features(showtime-audio-backend PRIVATE cxx_std_17)
 target_compile_options(showtime-audio-backend PRIVATE ${CMAJ_WARNING_FLAGS})

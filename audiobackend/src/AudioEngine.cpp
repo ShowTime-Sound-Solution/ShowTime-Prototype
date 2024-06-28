@@ -5,7 +5,16 @@
 #include "AudioEngine.hpp"
 
 AudioEngine::AudioEngine() {
+    //check if linux
+    #ifdef __linux__
+        std::cout << "Linux detected" << std::endl;
+        system("pactl load-module module-null-sink sink_name=ShowTime_Virtual_Input_1 sink_properties=device.description=ShowTime_Virtual_Input_1");
+        //change api to pulse
+        adc = RtAudio(RtAudio::Api::LINUX_PULSE);
+    #endif
+
     std::cout << "Initializing Audio Engine" << std::endl;
+    std::cout << "Audio API used: " << adc.getCurrentApi() << std::endl;
     findShowTimeVirtualDevice();
 
     outputParams.deviceId = adc.getDefaultOutputDevice();
@@ -32,17 +41,31 @@ void AudioEngine::findShowTimeVirtualDevice() {
         exit(1);
     }
     std::cout << "Found " << devices.size() << " audio devices" << std::endl;
-    for (auto device : devices) {
-        std::cout << "Device: " << adc.getDeviceInfo(device).name << std::endl;
-        if (adc.getDeviceInfo(device).name == "ShowTime Sound Solution: ShowTime_Virtual_Input 2ch") {
-            std::cout << "Found ShowTime Virtual Device" << std::endl;
-            inputParams.deviceId = device;
-            inputParams.nChannels = 2;
-            inputParams.firstChannel = 0;
+    #ifndef __linux__
+        for (auto device : devices) {
+            std::cout << "Device: " << adc.getDeviceInfo(device).name << std::endl;
+            if (adc.getDeviceInfo(device).name == "ShowTime Sound Solution: ShowTime_Virtual_Input 2ch") {
+                std::cout << "Found ShowTime Virtual Device" << std::endl;
+                inputParams.deviceId = device;
+                inputParams.nChannels = 2;
+                inputParams.firstChannel = 0;
 
-            return;
+                return;
+            }
         }
-    }
+    #elif
+        for (auto device : devices) {
+            std::cout << "Device: " << adc.getDeviceInfo(device).name << std::endl;
+            if (adc.getDeviceInfo(device).name == "ShowTime_Virtual_Input_1.monitor") {
+                std::cout << "Found ShowTime Virtual Device" << std::endl;
+                inputParams.deviceId = device;
+                inputParams.nChannels = 2;
+                inputParams.firstChannel = 0;
+
+                return;
+            }
+        }
+    #endif
     std::cout << "ShowTime Virtual Device not found" << std::endl;
     exit(1);
 }

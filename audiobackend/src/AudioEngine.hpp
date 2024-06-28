@@ -4,8 +4,8 @@
 
 #pragma once
 
+#include <memory>
 #include "RtAudio.h"
-#include <CoreAudio/CoreAudio.h>
 #include "Effects/GainEffect.hpp"
 
 class AudioEngine {
