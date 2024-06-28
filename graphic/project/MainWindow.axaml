@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Width="1920" Height="1080"
+        x:Class="project.MainWindow"
+        Title="project">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+
+        
+        
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="5*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Grid.Background="#515151"></Grid>
+            <Grid Grid.Row="1" Grid.Background="#353535"></Grid>
+        </Grid>
+        
+        <Grid Grid.Column="1">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1080">
+                    <GradientStop Color="#6015AC" Offset="0"/>
+                    <GradientStop Color="#4F1CE1" Offset="0.5"/>
+                    <GradientStop Color="#270846" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
+                <Image Height="500" Width="500" 
+                       Source="avares://project/Assets/showtimetitre.png"/> 
+            </Grid>
+            <Grid Grid.Row="1"></Grid>
+
+            
+        </Grid>
+
+        
+    </Grid>
+    
+</Window>
