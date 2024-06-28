@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Threading;
 
 namespace SoundPropagation.Views;
 
@@ -12,28 +14,30 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        
+        DispatcherTimer.Run(() =>
+        {
+            OnRunSimulation(null, null);
+            return true;
+        }, TimeSpan.FromMilliseconds(100));
     }
 
-    public override void BeginInit()
+    private void OnRunSimulation(object? sender, RoutedEventArgs? e)
     {
+        var decibels = new Random().NextDouble() * 100 + 75;
+
         InitRoom(_room);
-        AddAudioSource(RoomWidth / 2, RoomHeight / 2, 60);
+        AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, decibels);
         // Add a wall in the room
-        for (var i = 0; i < RoomWidth / 2; i++)
-            _room[RoomWidth / 4 + i, RoomWidth / 4] = new Box { Type = BoxType.Wall };
+        for (var i = 0; i < RoomHeight / 2; i++)
+            _room[RoomHeight / 4 + i, RoomWidth / 4] = new Box { Type = BoxType.Wall };
+        for (var i = 0; i < RoomWidth / 4; i++)
+            _room[RoomWidth / 4, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
+        for (var i = 0; i < RoomWidth / 4; i++)
+            _room[RoomWidth / 4 * 3 - 1, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
+        for (var i = 0; i < RoomHeight / 2; i++)
+            _room[RoomHeight / 4 + i, RoomWidth / 4 * 3] = new Box { Type = BoxType.Wall };
 
-
-        // for (var i = 0; i < RoomWidth; i++)
-        // {
-        //     for (var j = 0; j < RoomHeight; j++)
-        //         Console.Write(_room[i, j]);
-        //     Console.WriteLine();
-        // }
-        base.BeginInit();
-    }
-
-    private void OnRunSimulation(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
         PropagateSound();
         DrawRoom();
     }
@@ -51,7 +55,7 @@ public partial class MainWindow : Window
 
         foreach (var (x, y) in _audioSources)
             PropagateSoundFromSource(x, y, newRoom);
-        
+
         _room = newRoom;
     }
 
@@ -67,6 +71,7 @@ public partial class MainWindow : Window
             var decibels = newRoom[x, y].Decibels;
             if (decibels < 0.01)
                 continue;
+
             var neighbors = GetNeighbors(x, y, 1);
             foreach (var (nx, ny) in neighbors)
             {
@@ -75,7 +80,7 @@ public partial class MainWindow : Window
 
                 var distance = Math.Sqrt((x - nx) * (x - nx) + (y - ny) * (y - ny));
                 var newVolume = decibels - distance;
-                if (newVolume < 0 || !(newVolume > newRoom[nx, ny].Decibels))
+                if (newVolume < 0 || newVolume <= newRoom[nx, ny].Decibels)
                     continue;
 
                 newRoom[nx, ny].Decibels = newVolume;
@@ -101,6 +106,7 @@ public partial class MainWindow : Window
                 continue;
             neighbors.Add(new Tuple<int, int>(x + i, y + j));
         }
+
         return neighbors;
     }
 
@@ -114,10 +120,8 @@ public partial class MainWindow : Window
         {
             for (var j = 0; j < RoomHeight; j++)
             {
-                int color;
-                if (_room[i, j].Type == BoxType.Wall)
-                    color = -1;
-                else
+                var color = -1;
+                if (_room[i, j].Type == BoxType.Air)
                 {
                     var normalizedDecibels = (_room[i, j].Decibels - _minDecibels) / (_maxDecibels - _minDecibels);
                     normalizedDecibels = Math.Max(0, Math.Min(normalizedDecibels, 1));
@@ -125,24 +129,29 @@ public partial class MainWindow : Window
                 }
 
                 for (var k = 0; k < PixelSize; k++)
+                for (var l = 0; l < PixelSize; l++)
                 {
-                    for (var l = 0; l < PixelSize; l++)
-                    {
-                        var index = (i * PixelSize + k) * RoomSize * 4 + (j * PixelSize + l) * 4;
-                        pixels[index + 3] = 255;
+                    var index = (i * PixelSize + k) * RoomSize * 4 + (j * PixelSize + l) * 4;
+                    pixels[index + 3] = 255;
 
-                        if (color == -1)
-                        {
-                            pixels[index] = (byte)(_room[i, j].Type == BoxType.Source ? 255 : 0);
+                    switch (_room[i, j].Type)
+                    {
+                        case BoxType.Wall:
+                            pixels[index] = 0;
                             pixels[index + 1] = 0;
-                            pixels[index + 2] = (byte)(_room[i, j].Type == BoxType.Wall ? 255 : 0);
-                        }
-                        else
-                        {
-                            pixels[index] = (byte)color;
-                            pixels[index + 1] = (byte)color;
+                            pixels[index + 2] = 0;
+                            break;
+                        case BoxType.Source:
+                            pixels[index] = 0;
+                            pixels[index + 1] = 255;
+                            pixels[index + 2] = 0;
+                            break;
+                        case BoxType.Air:
+                        default:
+                            pixels[index] = (byte)(255 - color);
+                            pixels[index + 1] = 0;
                             pixels[index + 2] = (byte)color;
-                        }
+                            break;
                     }
                 }
             }
@@ -164,16 +173,16 @@ public partial class MainWindow : Window
             room[i, j] = new Box();
     }
 
-    private const int RoomWidth = 100;
-    private const int RoomHeight = 100;
+    private const int RoomWidth = 200;
+    private const int RoomHeight = 200;
     private const int RoomSize = 600;
     private const int PixelSize = RoomSize / RoomWidth;
 
     private Box[,] _room = new Box[RoomHeight, RoomWidth];
-    private readonly List<Tuple<int, int>> _audioSources = new();
+    private readonly List<Tuple<int, int>> _audioSources = [];
 
     private double _maxDecibels = 1;
-    private double _minDecibels = 0;
+    private double _minDecibels;
 }
 
 public class Box
