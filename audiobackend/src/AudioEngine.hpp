@@ -8,6 +8,8 @@
 #include "RtAudio.h"
 #include "Effects/GainEffect.hpp"
 
+class ApiClient;
+
 class AudioEngine {
     public:
         AudioEngine();
@@ -22,6 +24,14 @@ class AudioEngine {
 
         char *getOutputDevicesAvailable();
 
+        void setApiClient(ApiClient *apiClient) {
+            _apiClient = apiClient;
+        }
+
+        ApiClient *getApiClient() {
+            return _apiClient;
+        }
+
     private:
         RtAudio adc = RtAudio(RtAudio::Api::MACOSX_CORE);
         RtAudio::StreamParameters inputParams;
@@ -33,6 +43,7 @@ class AudioEngine {
 
         std::vector<std::unique_ptr<IEffect>> effects;
 
+        ApiClient *_apiClient;
 
         static int input(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
                          double streamTime, RtAudioStreamStatus status, void *userData);

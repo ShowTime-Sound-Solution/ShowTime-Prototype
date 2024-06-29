@@ -30,11 +30,11 @@ void ApiClient::run()
     while (_running) {
         memset(buffer, 0, sizeof(buffer));
         recv(_socket, buffer, 1024, 0);
-        int num = atoi(buffer);
+        /*int num = atoi(buffer);
         if (num > 0) {
             _audioEngine->changeOutputDevice(num);
             continue;
-        }
+        }*/
         std::cout << "Buffer : " << buffer << std::endl;
         if (strcmp(buffer, "p\n") == 0) {
             GainEffect *gainEffect = nullptr;
@@ -89,4 +89,26 @@ void ApiClient::sendOutputDevicesAvailable()
     char *result = strcat(code, devices);
     std::cout << "Sending output devices available" << std::endl;
     send(result);
+}
+
+void ApiClient::sendOutputBuffer(char *buffer) const
+{
+    char *result = new char[512 * 4 + 2] {0};
+    result[0] = 0x03;
+    for (int i = 0; i < 512 * 4; i++) {
+        result[i + 1] = buffer[i];
+    }
+    send(result);
+    delete[] result;
+}
+
+void ApiClient::sendInputBuffer(char *buffer) const
+{
+    char *result = new char[512 * 4 + 2] {0};
+    result[0] = 0x04;
+    for (int i = 0; i < 512 * 4; i++) {
+        result[i + 1] = buffer[i];
+    }
+    send(result);
+    delete[] result;
 }

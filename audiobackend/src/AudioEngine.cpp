@@ -4,6 +4,8 @@
 
 #include "AudioEngine.hpp"
 
+#include "API/ApiClient.hpp"
+
 AudioEngine::AudioEngine() {
     //check if linux
     #ifdef __linux__
@@ -91,7 +93,9 @@ int AudioEngine::input(void *outputBuffer, void *inputBuffer, unsigned int nBuff
     AudioEngine *engine = (AudioEngine *)userData;
     float *in = (float *)inputBuffer;
     float *out = (float *)outputBuffer;
+    engine->getApiClient()->sendInputBuffer((char *)in);
     engine->processEffects(in, out, nBufferFrames);
+    engine->getApiClient()->sendOutputBuffer((char *)out);
     return 0;
 }
 

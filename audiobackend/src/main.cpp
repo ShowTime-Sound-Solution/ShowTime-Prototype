@@ -4,9 +4,11 @@
 
 int main() {
     std::shared_ptr<AudioEngine> ae = std::make_shared<AudioEngine>();
-    ApiClient apiClient(ae);
+    auto *apiClient = new ApiClient(ae);
 
-    apiClient.run();
+    ae->setApiClient(apiClient);
+
+    apiClient->run();
 
     ae->start();
 
