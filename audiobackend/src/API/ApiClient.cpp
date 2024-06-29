@@ -4,6 +4,8 @@
 
 #include "ApiClient.hpp"
 
+#include <sys/stat.h>
+
 ApiClient::ApiClient(std::shared_ptr<AudioEngine> audioEngine) : _audioEngine(std::move(audioEngine))
 {
     _socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -33,6 +35,7 @@ void ApiClient::run()
             _audioEngine->changeOutputDevice(num);
             continue;
         }
+        std::cout << "Buffer : " << buffer << std::endl;
         if (strcmp(buffer, "p\n") == 0) {
             GainEffect *gainEffect = nullptr;
             for (auto &effect : _audioEngine->getEffects()) {
@@ -65,8 +68,16 @@ void ApiClient::handlingCommand(char *buffer)
         stop();
     }
 
-    if (buffer[0] == 0x30) {
+    if (buffer[0] == 0x01) {
         sendOutputDevicesAvailable();
+        return;
+    }
+    if (buffer[0] == 0x02) {
+        int num = static_cast<int>(static_cast<unsigned char>(buffer[1]));
+        std::cout << "device requested : " << num << std::endl;
+        char *response = new char[2] {0x02, static_cast<char>(num)};
+        _audioEngine->changeOutputDevice(num);
+        send(response);
         return;
     }
 }
@@ -74,5 +85,8 @@ void ApiClient::handlingCommand(char *buffer)
 void ApiClient::sendOutputDevicesAvailable()
 {
     char *devices = _audioEngine->getOutputDevicesAvailable();
-    send(devices);
+    char *code = new char[2] {0x01, 0x00};
+    char *result = strcat(code, devices);
+    std::cout << "Sending output devices available" << std::endl;
+    send(result);
 }
