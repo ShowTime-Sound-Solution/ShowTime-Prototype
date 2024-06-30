@@ -26,9 +26,9 @@ ApiClient::ApiClient(std::shared_ptr<AudioEngine> audioEngine) : _audioEngine(st
 
 void ApiClient::run()
 {
-    char buffer[1024] = {0};
+    char *buffer = static_cast<char *>(malloc(1024));
     while (_running) {
-        memset(buffer, 0, sizeof(buffer));
+        memset(buffer, 0, 1024);
         recv(_socket, buffer, 1024, 0);
         /*int num = atoi(buffer);
         if (num > 0) {
@@ -60,6 +60,7 @@ void ApiClient::run()
         }
         handlingCommand(buffer);
     }
+    free(buffer);
 }
 
 void ApiClient::handlingCommand(char *buffer)
@@ -68,12 +69,12 @@ void ApiClient::handlingCommand(char *buffer)
         stop();
     }
 
-    if (buffer[0] == 0x01) {
+    if (buffer[0] == 0x30) {
         sendOutputDevicesAvailable();
         return;
     }
-    if (buffer[0] == 0x02) {
-        int num = static_cast<int>(static_cast<unsigned char>(buffer[1]));
+    if (buffer[0] == 0x31) {
+        int num = atoi(&buffer[1]);
         std::cout << "device requested : " << num << std::endl;
         char *response = new char[2] {0x02, static_cast<char>(num)};
         _audioEngine->changeOutputDevice(num);
@@ -96,9 +97,12 @@ void ApiClient::handlingCommand(char *buffer)
 
 void ApiClient::sendOutputDevicesAvailable()
 {
-    char *devices = _audioEngine->getOutputDevicesAvailable();
-    char *code = new char[2] {0x01, 0x00};
-    char *result = strcat(code, devices);
+    std::string devices = _audioEngine->getOutputDevicesAvailable();
+    char *result = new char[devices.size() + 2] {0};
+    result[0] = 0x02;
+    for (int i = 0; i < devices.size(); i++) {
+        result[i + 1] = devices[i];
+    }
     std::cout << "Sending output devices available" << std::endl;
     send(result);
 }

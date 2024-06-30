@@ -10,9 +10,9 @@ AudioEngine::AudioEngine() {
     //check if linux
     #ifdef __linux__
         std::cout << "Linux detected" << std::endl;
-        system("pactl load-module module-null-sink sink_name=ShowTime_Virtual_Input_1 sink_properties=device.description=ShowTime_Virtual_Input_1");
+        system("pactl load-module module-null-sink sink_name=ShowTime_Virtual_Input_1 sink_properties=device.description=ShowTime_Virtual_Input_1 channels=2");
         //change api to pulse
-        adc = RtAudio(RtAudio::Api::LINUX_PULSE);
+        adc.showWarnings(true);
     #endif
 
     std::cout << "Initializing Audio Engine" << std::endl;
@@ -57,11 +57,11 @@ void AudioEngine::findShowTimeVirtualDevice() {
         }
     #else
         for (auto device : devices) {
-            std::cout << "Device: " << adc.getDeviceInfo(device).name << std::endl;
-            if (adc.getDeviceInfo(device).name == "ShowTime_Virtual_Input_1.monitor") {
-                std::cout << "Found ShowTime Virtual Device" << std::endl;
+            std::cout << "Device: " << adc.getDeviceInfo(device).name << " (" << device << ")" << std::endl;
+            if (adc.getDeviceInfo(device).name == "Monitor of ShowTime_Virtual_Input_1") {
+                std::cout << "Found ShowTime Virtual Device with " << adc.getDeviceInfo(device).inputChannels << " channels (" << device << ")" << std::endl;
                 inputParams.deviceId = device;
-                inputParams.nChannels = 2;
+                inputParams.nChannels = adc.getDeviceInfo(device).inputChannels;
                 inputParams.firstChannel = 0;
 
                 return;
@@ -93,9 +93,9 @@ int AudioEngine::input(void *outputBuffer, void *inputBuffer, unsigned int nBuff
     AudioEngine *engine = (AudioEngine *)userData;
     float *in = (float *)inputBuffer;
     float *out = (float *)outputBuffer;
-    engine->getApiClient()->sendInputBuffer((char *)in);
+    //engine->getApiClient()->sendInputBuffer((char *)in);
     engine->processEffects(in, out, nBufferFrames);
-    engine->getApiClient()->sendOutputBuffer((char *)out);
+    //engine->getApiClient()->sendOutputBuffer((char *)out);
     return 0;
 }
 
@@ -118,7 +118,7 @@ void AudioEngine::changeOutputDevice(int numDevice) {
     sampleRate = device.preferredSampleRate;
     adc.openStream(&outputParams, &inputParams, RTAUDIO_FLOAT32, sampleRate, &bufferFrames, &input, this);
     adc.startStream();
-    std::cout << "Output device changed to: " << adc.getDeviceInfo(deviceId).name << " with sample rate: " << sampleRate << std::endl;
+    std::cout << "Output device changed to: " << adc.getDeviceInfo(deviceId).name << " with sample rate: " << sampleRate << " and " << device.outputChannels << " channels" << std::endl;
 }
 
 void AudioEngine::loadEffects() {
@@ -149,7 +149,15 @@ char *AudioEngine::getOutputDevicesAvailable() {
         auto device = adc.getDeviceInfo(devices[i]);
         strcat(buffer, std::to_string(i + 1).c_str());
         strcat(buffer, " - ");
+        strcat(buffer, std::to_string(device.ID).c_str());
+        strcat(buffer, " - ");
         strcat(buffer, device.name.c_str());
+        strcat(buffer, " - ");
+        strcat(buffer, std::to_string(device.outputChannels).c_str());
+        strcat(buffer, " - ");
+        strcat(buffer, std::to_string(device.preferredSampleRate).c_str());
+        strcat(buffer, " - ");
+        strcat(buffer, std::to_string(device.inputChannels).c_str());
         strcat(buffer, "\n");
     }
     return buffer;

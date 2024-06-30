@@ -33,7 +33,11 @@ class AudioEngine {
         }
 
     private:
-        RtAudio adc = RtAudio(RtAudio::Api::MACOSX_CORE);
+        #ifdef __linux__
+            RtAudio adc = RtAudio(RtAudio::Api::LINUX_PULSE);
+        #else
+            RtAudio adc = RtAudio(RtAudio::Api::MACOSX_CORE);
+        #endif
         RtAudio::StreamParameters inputParams;
         RtAudio::StreamParameters outputParams;
         bool already_draw = false;
