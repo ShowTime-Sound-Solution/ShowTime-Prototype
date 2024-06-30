@@ -7,9 +7,7 @@ project(
 
 
 
-add_executable(showtime-audio-backend
-        src/API/ApiClient.cpp
-        src/API/ApiClient.hpp)
+add_executable(showtime-audio-backend)
 
 target_compile_features(showtime-audio-backend PRIVATE cxx_std_17)
 target_compile_options(showtime-audio-backend PRIVATE ${CMAJ_WARNING_FLAGS})
@@ -19,9 +17,12 @@ target_sources(showtime-audio-backend
         src/main.cpp
         src/AudioEngine.cpp
         src/AudioEngine.hpp
+        src/API/ApiClient.cpp
+        src/API/ApiClient.hpp
         src/Effects/IEffect.hpp
         src/Effects/AEffect.hpp
-        src/Effects/GainEffect.hpp)
+        src/Effects/GainEffect.hpp
+        src/Effects/PhaseInverterEffect.hpp)
 
 find_package(RtAudio REQUIRED)
 target_link_libraries(showtime-audio-backend

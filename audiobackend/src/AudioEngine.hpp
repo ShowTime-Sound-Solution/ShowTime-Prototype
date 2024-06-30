@@ -7,6 +7,7 @@
 #include <memory>
 #include "RtAudio.h"
 #include "Effects/GainEffect.hpp"
+#include "Effects/PhaseInverterEffect.hpp"
 
 class ApiClient;
 

@@ -3,7 +3,6 @@
 //
 
 #include "AudioEngine.hpp"
-
 #include "API/ApiClient.hpp"
 
 AudioEngine::AudioEngine() {
@@ -93,9 +92,9 @@ int AudioEngine::input(void *outputBuffer, void *inputBuffer, unsigned int nBuff
     AudioEngine *engine = (AudioEngine *)userData;
     float *in = (float *)inputBuffer;
     float *out = (float *)outputBuffer;
-    //engine->getApiClient()->sendInputBuffer((char *)in);
+    engine->getApiClient()->sendInputBuffer((char *)in);
     engine->processEffects(in, out, nBufferFrames);
-    //engine->getApiClient()->sendOutputBuffer((char *)out);
+    engine->getApiClient()->sendOutputBuffer((char *)out);
     return 0;
 }
 
@@ -123,6 +122,7 @@ void AudioEngine::changeOutputDevice(int numDevice) {
 
 void AudioEngine::loadEffects() {
     effects.push_back(std::make_unique<GainEffect>(0));
+    effects.push_back(std::make_unique<PhaseInverterEffect>(1));
 }
 
 void AudioEngine::processEffects(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) {

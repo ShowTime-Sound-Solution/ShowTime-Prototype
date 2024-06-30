@@ -69,12 +69,12 @@ void ApiClient::handlingCommand(char *buffer)
         stop();
     }
 
-    if (buffer[0] == 0x30) {
+    if (buffer[0] == 0x01) {
         sendOutputDevicesAvailable();
         return;
     }
-    if (buffer[0] == 0x31) {
-        int num = atoi(&buffer[1]);
+    if (buffer[0] == 0x02) {
+        int num = static_cast<int>(static_cast<unsigned char>(buffer[1]));
         std::cout << "device requested : " << num << std::endl;
         char *response = new char[2] {0x02, static_cast<char>(num)};
         _audioEngine->changeOutputDevice(num);
