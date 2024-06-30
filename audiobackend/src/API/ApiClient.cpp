@@ -80,6 +80,18 @@ void ApiClient::handlingCommand(char *buffer)
         send(response);
         return;
     }
+    if (buffer[0] == 0x05) {
+        int idEffect = static_cast<int>(static_cast<unsigned char>(buffer[1]));
+        for (auto &effect : _audioEngine->getEffects()) {
+            if (effect->getId() == idEffect) {
+                effect->setEnabled(!effect->isEnabled());
+                std::cout << "Effect " << idEffect << " is now " << (effect->isEnabled() ? "enabled" : "disabled") << std::endl;
+                char *response = new char[2] {0x05, static_cast<char>(idEffect)};
+                send(response);
+            }
+        }
+        return;
+    }
 }
 
 void ApiClient::sendOutputDevicesAvailable()

@@ -10,4 +10,5 @@ class IEffect {
         virtual void process(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) = 0;
     protected:
         unsigned short _id = 0;
+        bool _enabled = true;
 };

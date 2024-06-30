@@ -12,6 +12,12 @@ class GainEffect : public AEffect {
         }
 
         void process(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) override {
+            if (!isEnabled()) {
+                for (unsigned int i = 0; i < nBufferFrames; i++) {
+                    outputBuffer[i] = inputBuffer[i];
+                }
+                return;
+            }
             for (unsigned int i = 0; i < nBufferFrames; i++) {
                 outputBuffer[i] = inputBuffer[i] * _gain;
             }
@@ -27,5 +33,5 @@ class GainEffect : public AEffect {
         }
 
     private:
-        float _gain = 1.0f;
+        float _gain = 0.3f;
 };

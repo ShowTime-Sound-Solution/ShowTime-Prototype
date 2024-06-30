@@ -137,7 +137,7 @@ void AudioEngine::processEffects(float *inputBuffer, float *outputBuffer, unsign
     }
 }
 
-std::vector<std::unique_ptr<IEffect>> &AudioEngine::getEffects() {
+std::vector<std::unique_ptr<AEffect>> &AudioEngine::getEffects() {
     return effects;
 }
 

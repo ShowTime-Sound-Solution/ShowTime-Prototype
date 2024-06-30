@@ -14,4 +14,12 @@ class AEffect : public IEffect {
         [[nodiscard]] unsigned short getId() const {
             return _id;
         }
+
+        void setEnabled(bool enabled) {
+            _enabled = enabled;
+        }
+
+        [[nodiscard]] bool isEnabled() const {
+            return _enabled;
+        }
 };

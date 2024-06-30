@@ -20,7 +20,7 @@ class AudioEngine {
 
         void changeOutputDevice(int deviceId);
 
-        std::vector<std::unique_ptr<IEffect>> &getEffects();
+        std::vector<std::unique_ptr<AEffect>> &getEffects();
 
         char *getOutputDevicesAvailable();
 
@@ -41,7 +41,7 @@ class AudioEngine {
         unsigned int bufferFrames = 512;
         unsigned int sampleRate = 44100;
 
-        std::vector<std::unique_ptr<IEffect>> effects;
+        std::vector<std::unique_ptr<AEffect>> effects;
 
         ApiClient *_apiClient;
 
