@@ -69,20 +69,21 @@ void ApiClient::handlingCommand(char *buffer)
         stop();
     }
 
-    if (buffer[0] == 0x01) {
+    if (buffer[0] == 0x30/*0x01*/) {
         sendOutputDevicesAvailable();
         return;
     }
-    if (buffer[0] == 0x02) {
-        int num = static_cast<int>(static_cast<unsigned char>(buffer[1]));
+    if (buffer[0] == 0x31/*0x02*/) {
+        int num = atoi(&buffer[1]);
         std::cout << "device requested : " << num << std::endl;
         char *response = new char[2] {0x02, static_cast<char>(num)};
         _audioEngine->changeOutputDevice(num);
         send(response);
         return;
     }
-    if (buffer[0] == 0x05) {
-        int idEffect = static_cast<int>(static_cast<unsigned char>(buffer[1]));
+    if (buffer[0] == 0x32/*0x05*/) {
+        int idEffect = atoi(&buffer[1]);
+        std::cout << "Effect requested : " << idEffect << std::endl;
         for (auto &effect : _audioEngine->getEffects()) {
             if (effect->getId() == idEffect) {
                 effect->setEnabled(!effect->isEnabled());
@@ -92,6 +93,17 @@ void ApiClient::handlingCommand(char *buffer)
             }
         }
         return;
+    }
+    if (buffer[0] == 0x33/*0x06*/) {
+        //set gain
+        float gain = atof(&buffer[1]);
+        for (auto &effect : _audioEngine->getEffects()) {
+            GainEffect *gainEffect = dynamic_cast<GainEffect *>(effect.get());
+            if (gainEffect != nullptr) {
+                gainEffect->setGain(gain);
+                std::cout << "Gain set to " << gain << std::endl;
+            }
+        }
     }
 }
 

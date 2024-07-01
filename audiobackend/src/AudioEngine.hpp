@@ -8,6 +8,7 @@
 #include "RtAudio.h"
 #include "Effects/GainEffect.hpp"
 #include "Effects/PhaseInverterEffect.hpp"
+#include "Effects/EqualizerEffect.hpp"
 
 class ApiClient;
 

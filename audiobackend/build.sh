@@ -11,8 +11,13 @@ if [ "$(uname)" != "Darwin" ]; then
     test "$OS_NAME" = "Darwin"; then
     echo "MacOS"
   else
-    echo "Unsupported distribution: $OS_NAME"
-    exit 1
+    if test "$(uname)" = "Linux"; then
+      sudo dnf install pulseaudio-libs-devel autoconf automake libtool
+    else
+
+      echo "Unsupported distribution: $OS_NAME"
+      exit 1
+    fi
   fi
 fi
 git clone https://github.com/thestk/rtaudio.git
@@ -35,6 +40,12 @@ mv showtime-audio-backend ..
 cd ..
 sudo rm -rf rtaudio
 sudo rm -rf build
+mkdir buildfftw
+cd buildfftw
+curl http://www.fftw.org/fftw-3.3.10.tar.gz | tar -zx -C .
+cd fftw-3.3.10 && ./configure && make && sudo make install
+cd ../..
+rm -rf buildfftw
 echo "Installing virtual audio device drivers..."
 ## checking if the drivers are already installed if on macos
 if [ "$(uname)" != "Darwin" ]; then
