@@ -19,7 +19,8 @@ target_sources(showtime-audio-backend
         src/AudioEngine.hpp
         src/Effects/IEffect.hpp
         src/Effects/AEffect.hpp
-        src/Effects/GainEffect.hpp)
+        src/Effects/GainEffect.hpp
+        src/Effects/ReverbEffect.hpp)
 
 find_package(RtAudio REQUIRED)
 target_link_libraries(showtime-audio-backend

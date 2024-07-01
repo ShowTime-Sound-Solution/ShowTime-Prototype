@@ -7,6 +7,7 @@
 #include "RtAudio.h"
 #include <CoreAudio/CoreAudio.h>
 #include "Effects/GainEffect.hpp"
+#include "Effects/ReverbEffect.hpp"
 
 class AudioEngine {
     public:

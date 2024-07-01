@@ -96,6 +96,7 @@ void AudioEngine::changeOutputDevice(int numDevice) {
 
 void AudioEngine::loadEffects() {
     effects.push_back(std::make_unique<GainEffect>(0));
+    effects.push_back(std::make_unique<ReverbEffect>(1));
 }
 
 void AudioEngine::processEffects(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) {
