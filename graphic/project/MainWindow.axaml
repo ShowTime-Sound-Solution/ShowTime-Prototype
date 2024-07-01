@@ -8,8 +8,8 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="308*"/>
+            <ColumnDefinition Width="1420*"/>
         </Grid.ColumnDefinitions>
 
         
@@ -19,8 +19,29 @@
                 <RowDefinition Height="5*" />
                 <RowDefinition Height="5*" />
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Grid.Background="#515151"></Grid>
-            <Grid Grid.Row="1" Grid.Background="#353535"></Grid>
+            <Grid Grid.Row="0" Grid.Background="#515151">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="7*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" VerticalAlignment="Center">
+                    <TextBlock TextAlignment="Center"> Output Devices </TextBlock>
+                </Grid>
+
+                <Grid Grid.Row="1"></Grid>
+
+            </Grid>
+            <Grid Grid.Row="1" Grid.Background="#353535">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="7*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" VerticalAlignment="Center">
+                    <TextBlock TextAlignment="Center"> Input Devices </TextBlock>
+                </Grid>
+
+                <Grid Grid.Row="1"></Grid>
+            </Grid>
         </Grid>
         
         <Grid Grid.Column="1">
@@ -32,16 +53,53 @@
                 </LinearGradientBrush>
             </Grid.Background>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="5*"/>
+                <RowDefinition Height="204*"/>
+                <RowDefinition Height="913*"/>
             </Grid.RowDefinitions>
             
             <Grid Grid.Row="0">
-                <Image Height="500" Width="500" 
-                       Source="avares://project/Assets/showtimetitre.png"/> 
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="271*"/>
+                    <ColumnDefinition Width="673*"/>
+                    <ColumnDefinition Width="476*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid Grid.Column="1" HorizontalAlignment="Center">
+                    <Image
+                        Height="500" Width="500"
+                        Source="avares://project/Assets/showtimetitre.png"/>
+                </Grid>
+                
             </Grid>
-            <Grid Grid.Row="1"></Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="780*"/>
+                    <ColumnDefinition Width="640*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="59*"/>
+                            <ColumnDefinition Width="721*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="1" Background="Blue"></Grid>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="46*"/>
+                            <ColumnDefinition Width="529*"/>
+                            <ColumnDefinition Width="65*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="1" Background="Blue">
+                            
+                        </Grid>
+                    </Grid>
+                </Grid>
 
+            </Grid>
             
         </Grid>
 
