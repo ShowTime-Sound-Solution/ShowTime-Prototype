@@ -6,7 +6,7 @@ if [ "$(uname)" != "Darwin" ]; then
   if test "$OS_NAME" = "Ubuntu" -o "$OS_NAME" = "Debian"; then
     sudo apt-get install libpulse-dev autoconf automake libtool
   elif test "$OS_NAME" = "Fedora"; then
-    sudo dnf install pulseaudio-libs-devel autoconf automake libtool
+    sudo dnf install pulseaudio-libs-devel autoconf automake libtool alsa-lib-devel
   elif
     test "$OS_NAME" = "Darwin"; then
     echo "MacOS"
@@ -32,6 +32,12 @@ cmake ..
 make
 sudo cmake --install .
 cd ../..
+mkdir buildfftw
+cd buildfftw
+curl http://www.fftw.org/fftw-3.3.10.tar.gz | tar -zx -C .
+cd fftw-3.3.10 && ./configure && make && sudo make install
+cd ../..
+rm -rf buildfftw
 mkdir build
 cd build
 cmake ..
@@ -40,12 +46,6 @@ mv showtime-audio-backend ..
 cd ..
 sudo rm -rf rtaudio
 sudo rm -rf build
-mkdir buildfftw
-cd buildfftw
-curl http://www.fftw.org/fftw-3.3.10.tar.gz | tar -zx -C .
-cd fftw-3.3.10 && ./configure && make && sudo make install
-cd ../..
-rm -rf buildfftw
 echo "Installing virtual audio device drivers..."
 ## checking if the drivers are already installed if on macos
 if [ "$(uname)" != "Darwin" ]; then
