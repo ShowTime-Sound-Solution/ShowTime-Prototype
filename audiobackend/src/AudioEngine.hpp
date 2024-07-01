@@ -9,6 +9,7 @@
 #include "Effects/GainEffect.hpp"
 #include "Effects/PhaseInverterEffect.hpp"
 #include "Effects/EqualizerEffect.hpp"
+#include "Effects/ReverbEffect.hpp"
 
 class ApiClient;
 
