@@ -105,6 +105,26 @@ void ApiClient::handlingCommand(char *buffer)
             }
         }
     }
+    if (buffer[0] == 0x34/*0x07*/) {
+        short selectorReverb = atoi(&buffer[1]);
+        for (auto &effect : _audioEngine->getEffects()) {
+            ReverbEffect *reverbEffect = dynamic_cast<ReverbEffect *>(effect.get());
+            if (reverbEffect != nullptr) {
+                reverbEffect->changeSelector(selectorReverb);
+                std::cout << "Reverb selector changed to " << selectorReverb << std::endl;
+            }
+        }
+    }
+    if (buffer[0] == 0x35/*0x08*/) {
+        float selectorPan = atof(&buffer[1]);
+        for (auto &effect : _audioEngine->getEffects()) {
+            PanEffect *panEffect = dynamic_cast<PanEffect *>(effect.get());
+            if (panEffect != nullptr) {
+                panEffect->setPan(selectorPan);
+                std::cout << "Pan selector changed to " << selectorPan << std::endl;
+            }
+        }
+    }
 }
 
 void ApiClient::sendOutputDevicesAvailable()

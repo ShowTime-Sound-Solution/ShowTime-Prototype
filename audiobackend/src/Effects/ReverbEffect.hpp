@@ -40,7 +40,7 @@ public:
             count++;
         } else {
             for (int i = 0; i < nBufferFrames; i++) {
-                outputBuffer[i] = inputBuffer[i] * 0.9 + impulseResponse8[i] * 0.5f;
+                outputBuffer[i] = inputBuffer[i] * 0.9 + array[selector][i] * 0.5f;
             }
         }
         for (int i = 0; i < nBufferFrames; i++) {
@@ -55,6 +55,10 @@ public:
         }
     }
 
+    void changeSelector(short newSelector) {
+        selector = newSelector;
+    }
+
 private:
     float *impulseResponse1 = new float[512 * 2];
     float *impulseResponse2 = new float[512 * 2];
@@ -64,5 +68,7 @@ private:
     float *impulseResponse6 = new float[512 * 2];
     float *impulseResponse7 = new float[512 * 2];
     float *impulseResponse8 = new float[512 * 2];
+    float *array[8] = {impulseResponse1, impulseResponse2, impulseResponse3, impulseResponse4, impulseResponse5, impulseResponse6, impulseResponse7, impulseResponse8};
+    short selector = 0;
     int count = 0;
 };
