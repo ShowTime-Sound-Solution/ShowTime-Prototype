@@ -10,6 +10,7 @@
 #include "Effects/PhaseInverterEffect.hpp"
 #include "Effects/EqualizerEffect.hpp"
 #include "Effects/ReverbEffect.hpp"
+#include "Effects/PanEffect.hpp"
 
 class ApiClient;
 
