@@ -69,8 +69,18 @@ public class ServerSocket
         while (Connected)
         {
             Array.Fill(_buffer, byte.MinValue);
-            _client.Receive(_buffer);
-            _callback(_buffer);
+
+            try
+            {
+                _client.Receive(_buffer);
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("Socket closed");
+                return;
+            }
+            if (Connected)
+                _callback(_buffer);
         }
     }
     
