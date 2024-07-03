@@ -25,6 +25,8 @@ class AudioEngine {
 
         char *getOutputDevicesAvailable();
 
+        char *getEffectsAvailable();
+
         void setApiClient(ApiClient *apiClient) {
             _apiClient = apiClient;
         }

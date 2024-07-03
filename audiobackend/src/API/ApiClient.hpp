@@ -37,6 +37,10 @@ class ApiClient {
 
         void sendInputBuffer(char *buffer) const;
 
+        void sendEffectsAvailable();
+
+        void switchEffect(char *buffer);
+
     private:
         int _socket;
         struct sockaddr_in _serverAddress{};

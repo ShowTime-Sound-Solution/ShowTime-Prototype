@@ -81,25 +81,23 @@ void ApiClient::handlingCommand(char *buffer)
         send(response);
         return;
     }
-    if (buffer[0] == 0x05) {
-        int idEffect = static_cast<int>(static_cast<unsigned char>(buffer[1]));
-        for (auto &effect : _audioEngine->getEffects()) {
-            if (effect->getId() == idEffect) {
-                effect->setEnabled(!effect->isEnabled());
-                std::cout << "Effect " << idEffect << " is now " << (effect->isEnabled() ? "enabled" : "disabled") << std::endl;
-                char *response = new char[2] {0x05, static_cast<char>(idEffect)};
-                send(response);
-            }
-        }
+    if (buffer[0] == 0x31) {
+        switchEffect(buffer);
+        return;
+    }
+    if (buffer[0] == 0x30) {
+        sendEffectsAvailable();
         return;
     }
 }
+
+
 
 void ApiClient::sendOutputDevicesAvailable()
 {
     std::string devices = _audioEngine->getOutputDevicesAvailable();
     char *result = new char[devices.size() + 2] {0};
-    result[0] = 0x02;
+    result[0] = 0x01;
     for (int i = 0; i < devices.size(); i++) {
         result[i + 1] = devices[i];
     }
@@ -127,4 +125,31 @@ void ApiClient::sendInputBuffer(char *buffer) const
     }
     send(result);
     delete[] result;
+}
+
+void ApiClient::sendEffectsAvailable()
+{
+    std::string effects = _audioEngine->getEffectsAvailable();
+    char *result = new char[effects.size() + 2] {0};
+    result[0] = 0x31;
+    for (int i = 0; i < effects.size(); i++) {
+        result[i + 1] = effects[i];
+    }
+    std::cout << "sending effects available" << std::endl;
+    send(result);
+//    std::cout << _audioEngine->getEffectsAvailable() << std::endl;
+}
+
+void ApiClient::switchEffect(char *buffer)
+{
+    int idEffect = static_cast<int>(static_cast<unsigned char>(buffer[1]));
+    std::cout << idEffect - 48 << std::endl;
+    for (auto &effect : _audioEngine->getEffects()) {
+        if (effect->getId() == idEffect - 48) {
+            effect->setEnabled(!effect->isEnabled());
+            std::cout << "Effect " << effect->getName() << " is now " << (effect->isEnabled() ? "enabled" : "disabled") << std::endl;
+            char *response = new char[2] {0x05, static_cast<char>(idEffect)};
+            send(response);
+        }
+    }
 }
