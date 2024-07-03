@@ -19,7 +19,7 @@ public class Client
     public Client()
     {
         _serverSocket = new ServerSocket();
-        _parseFunctions = new Dictionary<int, Action<byte[]>>() {{0x01, ParseAvailableDevice}};
+        _parseFunctions = new Dictionary<int, Action<byte[]>>() {{0x01, ParseAvailableDevice}, {0x04, ParseAudioBuffer}};
         
         _thread = new Thread(() =>
         {
@@ -82,11 +82,25 @@ public class Client
         _serverSocket.Stop();
         _thread.Join();
     }
+
+    private void ParseAudioBuffer(byte[] array)
+    {
+
+        Dispatcher.UIThread.Invoke(
+            () =>
+            {
+                var handler = AudioBufferEvent;
+
+                handler(this, array);
+            });
+    }
     
     public event AvailableDeviceEventHandler AvailableDeviceEvent;
+    public event AudioBufferEventHandler AudioBufferEvent;
 }
 
 public delegate void AvailableDeviceEventHandler(object sender, Dictionary<int, string> args);
+public delegate void AudioBufferEventHandler(object sender, byte[] buffer);
 
 public class AvailableDeviceEventHandlerArgs : EventArgs
 {

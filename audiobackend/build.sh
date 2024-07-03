@@ -6,13 +6,18 @@ if [ "$(uname)" != "Darwin" ]; then
   if test "$OS_NAME" = "Ubuntu" -o "$OS_NAME" = "Debian"; then
     sudo apt-get install libpulse-dev autoconf automake libtool
   elif test "$OS_NAME" = "Fedora"; then
-    sudo dnf install pulseaudio-libs-devel autoconf automake libtool
+    sudo dnf install pulseaudio-libs-devel autoconf automake libtool alsa-lib-devel
   elif
     test "$OS_NAME" = "Darwin"; then
     echo "MacOS"
   else
-    echo "Unsupported distribution: $OS_NAME"
-    exit 1
+    if test "$(uname)" = "Linux"; then
+      sudo dnf install pulseaudio-libs-devel autoconf automake libtool
+    else
+
+      echo "Unsupported distribution: $OS_NAME"
+      exit 1
+    fi
   fi
 fi
 git clone https://github.com/thestk/rtaudio.git
@@ -27,6 +32,12 @@ cmake ..
 make
 sudo cmake --install .
 cd ../..
+mkdir buildfftw
+cd buildfftw
+curl http://www.fftw.org/fftw-3.3.10.tar.gz | tar -zx -C .
+cd fftw-3.3.10 && ./configure && make && sudo make install
+cd ../..
+rm -rf buildfftw
 mkdir build
 cd build
 cmake ..

@@ -1,19 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia;
-using System;
-using System.Collections.Generic;
-using Avalonia;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using project.Components;
-using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Threading;
 
 namespace project;
 
@@ -26,12 +19,13 @@ public partial class MainWindow : Window
         InitializeComponent();
         this.KeyDown += MainWindow_KeyDown;
         
-        DispatcherTimer.Run(() =>
-        {
-            OnRunSimulation(null, null);
-            return true;
-        }, TimeSpan.FromMilliseconds(1));
-        
+        // DispatcherTimer.Run(() =>
+        // {
+        //     OnRunSimulation(null, null);
+        //     return true;
+        // }, TimeSpan.FromMilliseconds(1));
+        OnRunSimulation(null, [0]);
+        Client.AudioBufferEvent += OnRunSimulation;
     }
 
     protected override void OnClosing(WindowClosingEventArgs e)
@@ -39,7 +33,7 @@ public partial class MainWindow : Window
         Client.Stop();
         base.OnClosing(e);
     }
-
+    
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
@@ -69,9 +63,9 @@ public partial class MainWindow : Window
         }
     }
     
-    private void OnRunSimulation(object? sender, RoutedEventArgs? e)
+    private void OnRunSimulation(object? sender, byte[] buffer)
     {
-        var decibels = new Random().NextDouble() * 100 + 75;
+        var decibels = buffer.Max(x => Math.Abs(x));
 
         InitRoom(_room);
         AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, decibels);
