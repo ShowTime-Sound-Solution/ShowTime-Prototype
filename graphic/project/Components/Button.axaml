@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="project.Components.Button">
+    <Panel Height="87" Width="87">
+        <Ellipse  Width="87"
+                  Height="87"
+                  Fill="Black"
+                  StrokeThickness="4"></Ellipse>
+        <Rectangle
+            Width="1"
+            Height="35"
+            Fill="SlateGray"
+            Margin="0, 0, 0, 35"></Rectangle>   
+    </Panel>
+</UserControl>
