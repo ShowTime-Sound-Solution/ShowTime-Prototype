@@ -94,10 +94,10 @@ int AudioEngine::input(void *outputBuffer, void *inputBuffer, unsigned int nBuff
     float *in = (float *)inputBuffer;
     float *out = (float *)outputBuffer;
     engine->applyVolumeInput(in, nBufferFrames * 2);
-    engine->getApiClient()->sendInputBuffer((char *)in);
+    //engine->getApiClient()->sendInputBuffer((char *)in);
     engine->processEffects(in, out, nBufferFrames);
     engine->applyVolumeOutput(out, nBufferFrames * 2);
-    engine->getApiClient()->sendOutputBuffer((char *)out);
+    engine->getApiClient()->sendOutputBuffer(out);
     return 0;
 }
 
@@ -162,8 +162,8 @@ void AudioEngine::applyVolumeOutput(float *outputBuffer, unsigned int nBufferFra
 
 char *AudioEngine::getOutputDevicesAvailable() {
     auto devices = adc.getDeviceIds();
-    auto buffer = new char[1024];
-    memset(buffer, 0, 1024);
+    auto buffer = new char[4096];
+    memset(buffer, 0, 4096);
     for (int i = 0; i < devices.size(); i++) {
         auto device = adc.getDeviceInfo(devices[i]);
         strcat(buffer, std::to_string(i + 1).c_str());
@@ -184,8 +184,8 @@ char *AudioEngine::getOutputDevicesAvailable() {
 
 char *AudioEngine::getEffectsAvailable()
 {
-    auto buffer = new char[1024];
-    memset(buffer, 0, 1024);
+    auto buffer = new char[4096];
+    memset(buffer, 0, 4096);
     for (auto &effect : effects) {
         strcat(buffer, std::to_string(effect->getId()).c_str());
         strcat(buffer, " - ");
