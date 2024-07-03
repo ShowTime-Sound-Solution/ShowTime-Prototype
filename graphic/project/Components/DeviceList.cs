@@ -50,4 +50,12 @@ public partial class DeviceList : UserControl
     {
         MainWindow.Client.AskAvailableDevices();
     }
+
+    private void DeviceGrid_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (e.AddedItems.Count == 0)
+            return;
+        Console.WriteLine(((KeyValuePair<int, string>)e.AddedItems[0]!).Key);
+        MainWindow.Client.SelectDevice(((KeyValuePair<int, string>)e.AddedItems[0]!).Key);
+    }
 }
