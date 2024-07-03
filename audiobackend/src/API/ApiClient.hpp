@@ -33,7 +33,7 @@ class ApiClient {
 
         void handlingCommand(char *buffer);
 
-        void sendOutputBuffer(char *buffer);
+        void sendOutputBuffer(float *buffer);
 
         void sendInputBuffer(char *buffer);
 
@@ -49,4 +49,6 @@ class ApiClient {
         std::shared_ptr<AudioEngine> _audioEngine;
 
         void sendOutputDevicesAvailable();
+
+        bool _sendOutput = false;
 };

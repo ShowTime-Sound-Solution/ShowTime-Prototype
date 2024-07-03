@@ -26,10 +26,10 @@ ApiClient::ApiClient(std::shared_ptr<AudioEngine> audioEngine) : _audioEngine(st
 
 void ApiClient::run()
 {
-    char *buffer = static_cast<char *>(malloc(1024));
+    char *buffer = static_cast<char *>(malloc(4096));
     while (_running) {
-        memset(buffer, 0, 1024);
-        recv(_socket, buffer, 1024, 0);
+        memset(buffer, 0, 4096);
+        recv(_socket, buffer, 4096, 0);
         /*int num = atoi(buffer);
         if (num > 0) {
             _audioEngine->changeOutputDevice(num);
@@ -168,12 +168,23 @@ void ApiClient::sendOutputDevicesAvailable()
     send(result);
 }
 
-void ApiClient::sendOutputBuffer(char *buffer)
+void ApiClient::sendOutputBuffer(float *buffer)
 {
-    char *result = new char[512 * 4 + 2] {0};
+    _sendOutput = !_sendOutput;
+    if (!_sendOutput) {
+        return;
+    }
+    /*auto *result = new char[512 * 4 + 1] {0};
+    char *tmp = (char *)buffer;
     result[0] = 0x03;
     for (int i = 0; i < 512 * 4; i++) {
-        result[i + 1] = buffer[i];
+        result[i + 1] = tmp[i];
+    }*/
+    char *result = new char[512 * 4 + 2] {0};
+    result[0] = 0x03;
+    std::cout << "Sending output buffer" << std::endl;
+    for (int i = 0; i < 512; i++) {
+        memccpy(&result[i * 4 + 1], &buffer[i], 4, sizeof(float));
     }
     send(result);
     delete[] result;

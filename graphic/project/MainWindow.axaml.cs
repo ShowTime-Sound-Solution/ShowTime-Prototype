@@ -60,19 +60,25 @@ public partial class MainWindow : Window
     
     private void OnRunSimulation(object? sender, byte[] buffer)
     {
-        var vectFloat = new float[buffer.Length / 4 + 1];
-        Buffer.BlockCopy(buffer, 0, vectFloat, 0, buffer.Length);
-        var decibels = vectFloat.Max(x => Math.Abs(x)) * 200;
-
-        if (decibels > 300)
+        if (buffer.Length < 4)
+            return;
+        var floats = new float[512];
+        for (var i = 0; i < 512; i++)
         {
-            foreach (var x in vectFloat)
-            {
-                Console.Write($"{x} ");
-            }
-            Console.WriteLine();
+            floats[i] = BitConverter.ToSingle(buffer, i * 4);
         }
-        decibels = Math.Max(0.001f, Math.Min(decibels, 300));
+        var decibels = floats.Max(x => Math.Abs(x)) * 300;
+        if (decibels > 300)
+            return;
+        
+        /*foreach (var x in buffer)
+        {
+            floats[x] = BitConverter.ToSingle(buffer, x);
+        }*/
+        //var decibels = floats.Max(x => Math.Abs(x)) * 1;
+        //Console.WriteLine(decibels);
+        
+        //decibels = Math.Max(0.001f, Math.Min(decibels, 300));
         //Console.WriteLine(decibels);
         InitRoom(_room);
         AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, decibels);

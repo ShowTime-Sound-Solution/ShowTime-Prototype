@@ -16,7 +16,7 @@ public class ServerSocket
     private IPEndPoint _localEndPoint;
     private Socket _listener;
     private Socket _client;
-    private byte[] _buffer = new byte[1024];
+    private byte[] _buffer = new byte[4096];
     private Action<byte[]> _callback;
     
     public bool Connected { get; set; } = false;
