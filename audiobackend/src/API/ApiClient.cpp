@@ -168,7 +168,7 @@ void ApiClient::sendOutputDevicesAvailable()
     send(result);
 }
 
-void ApiClient::sendOutputBuffer(char *buffer) const
+void ApiClient::sendOutputBuffer(char *buffer)
 {
     char *result = new char[512 * 4 + 2] {0};
     result[0] = 0x03;
@@ -179,7 +179,7 @@ void ApiClient::sendOutputBuffer(char *buffer) const
     delete[] result;
 }
 
-void ApiClient::sendInputBuffer(char *buffer) const
+void ApiClient::sendInputBuffer(char *buffer)
 {
     char *result = new char[512 * 4 + 2] {0};
     result[0] = 0x04;

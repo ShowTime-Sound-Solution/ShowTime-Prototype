@@ -19,7 +19,7 @@ public class Client
     public Client()
     {
         _serverSocket = new ServerSocket();
-        _parseFunctions = new Dictionary<int, Action<byte[]>>() {{0x01, ParseAvailableDevice}, {0x04, ParseAudioBuffer}};
+        _parseFunctions = new Dictionary<int, Action<byte[]>>() {{0x01, ParseAvailableDevice}, {0x03, ParseAudioBuffer}};
         
         _thread = new Thread(() =>
         {
