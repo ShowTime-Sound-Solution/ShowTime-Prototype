@@ -1,20 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia;
+using Avalonia.Markup.Xaml;
+using project.Components;
 
 namespace project;
 
 public partial class MainWindow : Window
 {
     private bool _isFullScreen = false;
+    public static Client.Client Client = new Client.Client();
+
+    public Dictionary<int, string> Test = new Dictionary<int, string>()
+    {
+        {1, "abc"},
+        {2, "def"}
+    };
     public MainWindow()
     {
         InitializeComponent();
         this.KeyDown += MainWindow_KeyDown;
-        var client = new Client.Client();
-        
-        
+    }
+    
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
     
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
