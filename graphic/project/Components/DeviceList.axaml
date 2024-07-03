@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:components="clr-namespace:project.Components"
+        xmlns:project="clr-namespace:project"
+        x:Class="project.Components.DeviceList"
+        x:DataType="components:DeviceList">
+        <Panel>
+                <DataGrid Name="DeviceGrid" AutoGenerateColumns="True" HeadersVisibility="None">
+                </DataGrid>
+                <Button Click="RefreshButton_OnClick">
+                        <TextBlock Text="Refresh"></TextBlock>
+                </Button>
+        </Panel>
+</UserControl>
