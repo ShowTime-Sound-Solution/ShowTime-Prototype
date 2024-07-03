@@ -21,4 +21,10 @@
         <AvaloniaResource Include="Assets/showtimetitre.png" />
 
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Components\DeviceList.cs">
+        <DependentUpon>DeviceList.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

@@ -14,7 +14,15 @@ target_compile_options(showtime-audio-backend PRIVATE ${CMAJ_WARNING_FLAGS})
 
 target_sources(showtime-audio-backend
         PRIVATE
-        src/main.cpp)
+        src/main.cpp
+        src/AudioEngine.cpp
+        src/AudioEngine.hpp
+        src/API/ApiClient.cpp
+        src/API/ApiClient.hpp
+        src/Effects/IEffect.hpp
+        src/Effects/AEffect.hpp
+        src/Effects/GainEffect.hpp
+        src/Effects/PhaseInverterEffect.hpp)
 
 find_package(RtAudio REQUIRED)
 target_link_libraries(showtime-audio-backend

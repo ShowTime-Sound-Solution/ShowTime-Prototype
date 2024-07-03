@@ -1,8 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Avalonia;
+using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Markup.Xaml;
+using project.Components;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -12,6 +19,7 @@ namespace project;
 
 public partial class MainWindow : Window
 {
+    public static Client.Client Client = new Client.Client();
     private bool _isFullScreen = false;
     public MainWindow()
     {
@@ -23,6 +31,11 @@ public partial class MainWindow : Window
             OnRunSimulation(null, null);
             return true;
         }, TimeSpan.FromMilliseconds(1));
+    }
+    
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
     
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
@@ -190,7 +203,7 @@ public partial class MainWindow : Window
             System.Runtime.InteropServices.Marshal.Copy(pixels, 0, ptr, pixels.Length);
         }
 
-        SimulationImage.Source = bitmap;
+        this.Find<Image>("SimulationImage")!.Source = bitmap;
     }
 
     private void InitRoom(Box[,] room)

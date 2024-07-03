@@ -2,11 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:components="clr-namespace:project.Components"
+        xmlns:project="clr-namespace:project"
         Width="1920" Height="1080"
-        xmlns:components="clr-namespace:project"
         x:Class="project.MainWindow"
-        Title="project">
-    
+        Title="project"
+        x:CompileBindings="True"
+        x:DataType="project:MainWindow">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="308*"/>
@@ -42,7 +44,7 @@
                 <Grid Grid.Row="1"></Grid>
             </Grid>
         </Grid>
-        
+        <components:DeviceList Name="DeviceList" ></components:DeviceList>
         <Grid Grid.Column="1">
             <Grid.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1080">
@@ -145,7 +147,7 @@
                                         <TextBlock TextAlignment="Center" FontSize="20"> Pan </TextBlock>
                                     </Grid>
                                     <Grid Grid.Row="3">
-                                        <components:RotateButton />
+                                        <project:RotateButton />
                                     </Grid>
                                 </Grid>
                                 <Grid Grid.Column="3">
@@ -161,7 +163,7 @@
                                     </Grid>
 
                                     <Grid Grid.Row="3">
-                                        <components:RotateButton />
+                                        <project:RotateButton />
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -170,5 +172,8 @@
                 </Grid>
             </Grid>
         </Grid>
+
+        
     </Grid>
+    
 </Window>
