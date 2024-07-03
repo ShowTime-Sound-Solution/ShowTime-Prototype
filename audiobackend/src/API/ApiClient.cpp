@@ -144,14 +144,22 @@ void ApiClient::handlingCommand(char *buffer)
         if (strlen(buffer) < 2) {
             return;
         }
-        float volumeInputValue = static_cast<float>(buffer[1]);
+        char *tmp = new char[4] {0};
+        for (int i = 0; i < 4; i++) {
+            tmp[i] = buffer[i + 1];
+        }
+        float volumeInputValue = *reinterpret_cast<float *>(tmp);
         _audioEngine->setVolumeInput(volumeInputValue);
     }
     if (buffer[0] == 0x0A) {
         if (strlen(buffer) < 2) {
             return;
         }
-        float volumeOutputValue = static_cast<float>(buffer[1]);
+        char *tmp = new char[4] {0};
+        for (int i = 0; i < 4; i++) {
+            tmp[i] = buffer[i + 1];
+        }
+        float volumeOutputValue = *reinterpret_cast<float *>(tmp);
         _audioEngine->setVolumeOutput(volumeOutputValue);
     }
 }
@@ -182,7 +190,7 @@ void ApiClient::sendOutputBuffer(float *buffer)
     }*/
     char *result = new char[512 * 4 + 2] {0};
     result[0] = 0x03;
-    std::cout << "Sending output buffer" << std::endl;
+    //std::cout << "Sending output buffer" << std::endl;
     for (int i = 0; i < 512; i++) {
         memccpy(&result[i * 4 + 1], &buffer[i], 4, sizeof(float));
     }

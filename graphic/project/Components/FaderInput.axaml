@@ -1,0 +1,8 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="project.Components.FaderInput">
+        <Canvas Height="200" Width="35" HorizontalAlignment="Center">
+            <Rectangle Height="200" Width="20" HorizontalAlignment="Center" Fill="Black" Canvas.Left="7.5"></Rectangle>
+            <Ellipse x:Name="DraggableEllipse" Width="35" Height="35" Fill="green" Canvas.Left="0" Canvas.Top="-7.5" VerticalAlignment="Top"/>
+        </Canvas>
+</UserControl>

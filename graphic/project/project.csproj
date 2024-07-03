@@ -26,7 +26,7 @@
       <Compile Update="Components\DeviceList.cs">
         <DependentUpon>DeviceList.axaml</DependentUpon>
       </Compile>
-      <Compile Update="Components\DragAndDrop.axaml.cs">
+      <Compile Update="Components\FaderOutput.axaml.cs">
         <DependentUpon>DragAndDrop.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>

@@ -131,7 +131,7 @@
 
                                         </Grid.ColumnDefinitions>
                                         <Rectangle Grid.Column="1" Height="200" Fill="Black"/>
-                                        <components:DragAndDrop Grid.Column="3" HorizontalAlignment="Center"/>
+                                        <components:FaderInput Grid.Column="3" HorizontalAlignment="Center"/>
                                     </Grid>
                                     <Grid Grid.Column="3">
                                         <Grid.ColumnDefinitions>
@@ -143,7 +143,7 @@
 
                                         </Grid.ColumnDefinitions>
                                         <Rectangle Grid.Column="1" Height="200" Fill="Black"/>
-                                        <components:DragAndDrop Grid.Column="3" HorizontalAlignment="Center"/>
+                                        <components:FaderOutput Grid.Column="3" HorizontalAlignment="Center"/>
                                     </Grid>
                                 </Grid>
                                 <Grid Grid.Row="2">

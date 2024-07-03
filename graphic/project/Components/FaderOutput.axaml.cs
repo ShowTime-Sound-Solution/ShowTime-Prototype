@@ -8,7 +8,7 @@ using Avalonia.Controls.Shapes;
 
 namespace project.Components
 {
-    public partial class DragAndDrop : UserControl
+    public partial class FaderOutput : UserControl
     {
         private Ellipse _draggableEllipse;
         private bool _isDragging;
@@ -17,7 +17,7 @@ namespace project.Components
         private const double MinY = -17.5;
         private const double MaxY = 182.5;
 
-        public DragAndDrop()
+        public FaderOutput()
         {
             InitializeComponent();
             _draggableEllipse = this.FindControl<Ellipse>("DraggableEllipse");
@@ -50,6 +50,11 @@ namespace project.Components
                 if (newTop < MinY) newTop = MinY;
                 if (newTop > MaxY) newTop = MaxY;
                 Canvas.SetTop(_draggableEllipse, newTop);
+                
+                var value = (newTop - MinY) / (MaxY - MinY) * -1 + 1;
+                var floatValue = (float) value;
+                
+                MainWindow.Client.SendOutputFaderValue(floatValue);
             }
         }
         

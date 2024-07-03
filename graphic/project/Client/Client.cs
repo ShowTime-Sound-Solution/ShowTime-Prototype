@@ -95,6 +95,16 @@ public class Client
             });
     }
     
+    public void SendInputFaderValue(float value)
+    {
+        _serverSocket.Send(new byte[] {0x09}.Concat(BitConverter.GetBytes(value)).ToArray());
+    }
+    
+    public void SendOutputFaderValue(float value)
+    {
+        _serverSocket.Send(new byte[] {0x0A}.Concat(BitConverter.GetBytes(value)).ToArray());
+    }
+    
     public event AvailableDeviceEventHandler AvailableDeviceEvent;
     public event AudioBufferEventHandler AudioBufferEvent;
 }
