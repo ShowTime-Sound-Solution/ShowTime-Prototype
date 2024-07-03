@@ -72,6 +72,16 @@ public class Client
     {
         _serverSocket.Send(new byte[] {0x02, (byte) id});
     }
+
+    public void Stop()
+    {
+        if (_serverSocket.Connected)
+        {
+            _serverSocket.Send(Encoding.ASCII.GetBytes("stop\n"));
+        }
+        _serverSocket.Stop();
+        _thread.Join();
+    }
     
     public event AvailableDeviceEventHandler AvailableDeviceEvent;
 }

@@ -30,6 +30,7 @@ public class ServerSocket
                 127, 0, 0, 1
             });
 
+        
         foreach (var ee in _ipHost.AddressList)
         {
             Console.WriteLine(ee);
@@ -84,5 +85,12 @@ public class ServerSocket
         {
             Thread.Sleep(100);
         }
+    }
+    
+    public void Stop()
+    {
+        _client.Shutdown(SocketShutdown.Both);
+        _client.Close();
+        _listener.Close();
     }
 }

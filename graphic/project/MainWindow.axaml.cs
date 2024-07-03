@@ -31,8 +31,15 @@ public partial class MainWindow : Window
             OnRunSimulation(null, null);
             return true;
         }, TimeSpan.FromMilliseconds(1));
+        
     }
-    
+
+    protected override void OnClosing(WindowClosingEventArgs e)
+    {
+        Client.Stop();
+        base.OnClosing(e);
+    }
+
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
