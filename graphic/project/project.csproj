@@ -30,9 +30,5 @@
         <DependentUpon>DragAndDrop.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Components\RotateButton.axaml.cs">
-        <DependentUpon>RotateButton.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
     </ItemGroup>
 </Project>

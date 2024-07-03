@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:components="clr-namespace:project.Components"
-             x:Class="project.Components.RotateButton">
+             x:Class="project.Components.ReverbButton">
     <Panel Height="87" Width="87">
-        <components:Button x:Name="MyButton" />
+        <components:Button x:Name="ReverbButtonRotate" />
     </Panel>
 </UserControl>

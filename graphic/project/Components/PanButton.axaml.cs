@@ -9,16 +9,17 @@ using Avalonia.Media;
 namespace project.Components
 {
    
-    public partial class RotateButton : UserControl
+    public partial class PanButton : UserControl
     {
         private Components.Button _rotatableComponent;
         private Point _previousMousePosition;
         private double _currentAngle;
-        public RotateButton()
+        
+        public PanButton()
         {
             InitializeComponent();
             
-            _rotatableComponent = this.FindControl<Components.Button>("MyButton");
+            _rotatableComponent = this.FindControl<Components.Button>("PanButtonRotate");
             _rotatableComponent.PointerPressed += RotatableComponent_PointerPressed;
             _rotatableComponent.PointerMoved += RotatableComponent_PointerMoved;
         }
@@ -47,7 +48,6 @@ namespace project.Components
                 RotateTransform rotateTransform = new RotateTransform(_currentAngle, 0, 0);
                 _rotatableComponent.RenderTransform = rotateTransform;
                 _previousMousePosition = currentPosition;
-
             }
         }
     }
