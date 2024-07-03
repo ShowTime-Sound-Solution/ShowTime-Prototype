@@ -35,17 +35,15 @@ namespace project.Components
                 Point currentPosition = e.GetPosition(this);
                 Vector delta = currentPosition - _previousMousePosition;
 
-                // Calculate angle based on mouse movement
-                double angleDelta = delta.X; // You can adjust this for a different sensitivity
+                double angleDelta = delta.X;
                 _currentAngle += angleDelta;
                 Console.WriteLine(_currentAngle);
                 
-                if (_currentAngle < -90)
-                    _currentAngle = -90;
-                else if (_currentAngle > 90)
-                    _currentAngle = 90;
-
-                // Apply the rotation
+                if (_currentAngle < -95)
+                    _currentAngle = -95;
+                else if (_currentAngle > 95)
+                    _currentAngle = 95; // 190° pour les 19 de bass
+                
                 RotateTransform rotateTransform = new RotateTransform(_currentAngle, 0, 0);
                 _rotatableComponent.RenderTransform = rotateTransform;
                 _previousMousePosition = currentPosition;
