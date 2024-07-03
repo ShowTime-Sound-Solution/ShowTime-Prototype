@@ -137,7 +137,6 @@ void ApiClient::sendEffectsAvailable()
     }
     std::cout << "sending effects available" << std::endl;
     send(result);
-//    std::cout << _audioEngine->getEffectsAvailable() << std::endl;
 }
 
 void ApiClient::switchEffect(char *buffer)
