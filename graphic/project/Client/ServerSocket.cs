@@ -30,6 +30,7 @@ public class ServerSocket
                 127, 0, 0, 1
             });
 
+        
         foreach (var ee in _ipHost.AddressList)
         {
             Console.WriteLine(ee);
@@ -68,8 +69,18 @@ public class ServerSocket
         while (Connected)
         {
             Array.Fill(_buffer, byte.MinValue);
-            _client.Receive(_buffer);
-            _callback(_buffer);
+
+            try
+            {
+                _client.Receive(_buffer);
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("Socket closed");
+                return;
+            }
+            if (Connected)
+                _callback(_buffer);
         }
     }
     
@@ -84,5 +95,12 @@ public class ServerSocket
         {
             Thread.Sleep(100);
         }
+    }
+    
+    public void Stop()
+    {
+        _client.Shutdown(SocketShutdown.Both);
+        _client.Close();
+        _listener.Close();
     }
 }

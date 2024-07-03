@@ -32,12 +32,12 @@ cmake ..
 make
 sudo cmake --install .
 cd ../..
-#mkdir buildfftw
-#cd buildfftw
-#curl http://www.fftw.org/fftw-3.3.10.tar.gz | tar -zx -C .
-#cd fftw-3.3.10 && ./configure && make && sudo make install
-#cd ../..
-#rm -rf buildfftw
+mkdir buildfftw
+cd buildfftw
+curl http://www.fftw.org/fftw-3.3.10.tar.gz | tar -zx -C .
+cd fftw-3.3.10 && ./configure && make && sudo make install
+cd ../..
+rm -rf buildfftw
 mkdir build
 cd build
 cmake ..

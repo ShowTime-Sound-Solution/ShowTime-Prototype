@@ -55,7 +55,7 @@ public partial class DeviceList : UserControl
     {
         if (e.AddedItems.Count == 0)
             return;
-        Console.WriteLine(((KeyValuePair<int, string>)e.AddedItems[0]!).Key);
+        Console.WriteLine("selected device " + ((KeyValuePair<int, string>)e.AddedItems[0]!).Key);
         MainWindow.Client.SelectDevice(((KeyValuePair<int, string>)e.AddedItems[0]!).Key);
     }
 }

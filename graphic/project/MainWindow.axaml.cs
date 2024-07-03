@@ -1,19 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia;
-using System;
-using System.Collections.Generic;
-using Avalonia;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using project.Components;
-using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Threading;
 
 namespace project;
 
@@ -26,11 +19,14 @@ public partial class MainWindow : Window
         InitializeComponent();
         this.KeyDown += MainWindow_KeyDown;
         
-        DispatcherTimer.Run(() =>
-        {
-            OnRunSimulation(null, null);
-            return true;
-        }, TimeSpan.FromMilliseconds(1));
+        OnRunSimulation(null, [0]);
+        Client.AudioBufferEvent += OnRunSimulation;
+    }
+
+    protected override void OnClosing(WindowClosingEventArgs e)
+    {
+        Client.Stop();
+        base.OnClosing(e);
     }
     
     private void InitializeComponent()
@@ -62,10 +58,22 @@ public partial class MainWindow : Window
         }
     }
     
-    private void OnRunSimulation(object? sender, RoutedEventArgs? e)
+    private void OnRunSimulation(object? sender, byte[] buffer)
     {
-        var decibels = new Random().NextDouble() * 100 + 75;
+        var vectFloat = new float[buffer.Length / 4 + 1];
+        Buffer.BlockCopy(buffer, 0, vectFloat, 0, buffer.Length);
+        var decibels = vectFloat.Max(x => Math.Abs(x)) * 200;
 
+        if (decibels > 300)
+        {
+            foreach (var x in vectFloat)
+            {
+                Console.Write($"{x} ");
+            }
+            Console.WriteLine();
+        }
+        decibels = Math.Max(0.001f, Math.Min(decibels, 300));
+        //Console.WriteLine(decibels);
         InitRoom(_room);
         AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, decibels);
         // Add a wall in the room

@@ -33,9 +33,9 @@ class ApiClient {
 
         void handlingCommand(char *buffer);
 
-        void sendOutputBuffer(char *buffer) const;
+        void sendOutputBuffer(char *buffer);
 
-        void sendInputBuffer(char *buffer) const;
+        void sendInputBuffer(char *buffer);
 
         void sendEffectsAvailable();
 
