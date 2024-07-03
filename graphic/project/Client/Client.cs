@@ -67,6 +67,11 @@ public class Client
                 handler(this, args);
             });
     }
+
+    public void SelectDevice(int id)
+    {
+        _serverSocket.Send(new byte[] {0x02, (byte) id});
+    }
     
     public event AvailableDeviceEventHandler AvailableDeviceEvent;
 }
