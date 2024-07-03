@@ -115,6 +115,11 @@ public class Client
         _serverSocket.Send(new byte[] {0x08}.Concat(BitConverter.GetBytes(value)).ToArray());
     }
     
+    public void SendReverbValue(short value)
+    {
+        _serverSocket.Send(new byte[] {0x07}.Concat(BitConverter.GetBytes(value)).ToArray());
+    }
+    
     public event AvailableDeviceEventHandler AvailableDeviceEvent;
     public event AudioBufferEventHandler AudioBufferEvent;
 }

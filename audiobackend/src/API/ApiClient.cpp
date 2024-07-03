@@ -122,7 +122,11 @@ void ApiClient::handlingCommand(char *buffer)
         if (strlen(buffer) < 2) {
             return;
         }
-        short selectorReverb = static_cast<short>(buffer[1]);
+        char *tmp = new char[4] {0};
+        for (int i = 0; i < 4; i++) {
+            tmp[i] = buffer[i + 1];
+        }
+        short selectorReverb = *reinterpret_cast<short *>(tmp);
         for (auto &effect : _audioEngine->getEffects()) {
             ReverbEffect *reverbEffect = dynamic_cast<ReverbEffect *>(effect.get());
             if (reverbEffect != nullptr) {

@@ -22,6 +22,8 @@ namespace project.Components
             _rotatableComponent = this.FindControl<Components.Button>("ReverbButtonRotate");
             _rotatableComponent.PointerPressed += RotatableComponent_PointerPressed;
             _rotatableComponent.PointerMoved += RotatableComponent_PointerMoved;
+            RotateTransform rotateTransform = new RotateTransform(-90, 0, 0);
+            _rotatableComponent.RenderTransform = rotateTransform;
         }
 
         private void RotatableComponent_PointerPressed(object sender, PointerPressedEventArgs e)
@@ -40,14 +42,20 @@ namespace project.Components
                 _currentAngle += angleDelta;
                 Console.WriteLine(_currentAngle);
                 
-                if (_currentAngle < -95)
-                    _currentAngle = -95;
-                else if (_currentAngle > 95)
-                    _currentAngle = 95; // 190° pour les 19 de bass
+                if (_currentAngle < -90)
+                    _currentAngle = -90;
+                else if (_currentAngle > 90)
+                    _currentAngle = 90;
                 
                 RotateTransform rotateTransform = new RotateTransform(_currentAngle, 0, 0);
                 _rotatableComponent.RenderTransform = rotateTransform;
                 _previousMousePosition = currentPosition;
+                
+                // -90 is 0 reverb, 90 is 19 reverb (short)
+                var reverb = (_currentAngle + 90) / 180 * 19;
+                var reverbFloat = (short) reverb;
+                
+                MainWindow.Client.SendReverbValue(reverbFloat);
 
             }
         }
