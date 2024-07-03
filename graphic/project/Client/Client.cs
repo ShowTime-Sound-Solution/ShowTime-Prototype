@@ -80,7 +80,7 @@ public class Client
             _serverSocket.Send(Encoding.ASCII.GetBytes("stop\n"));
         }
         _serverSocket.Stop();
-        _thread.Join();
+        _thread.Interrupt();
     }
 
     private void ParseAudioBuffer(byte[] array)

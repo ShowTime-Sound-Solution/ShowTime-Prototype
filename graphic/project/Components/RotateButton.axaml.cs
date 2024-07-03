@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace project
+namespace project.Components
 {
     public partial class RotateButton : UserControl
     {
