@@ -19,11 +19,6 @@ public partial class MainWindow : Window
         InitializeComponent();
         this.KeyDown += MainWindow_KeyDown;
         
-        // DispatcherTimer.Run(() =>
-        // {
-        //     OnRunSimulation(null, null);
-        //     return true;
-        // }, TimeSpan.FromMilliseconds(1));
         OnRunSimulation(null, [0]);
         Client.AudioBufferEvent += OnRunSimulation;
     }
