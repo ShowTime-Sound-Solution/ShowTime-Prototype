@@ -3,11 +3,13 @@ using Avalonia.Markup.Xaml;
 
 namespace project.Components
 {
-    public partial class RotateButton : UserControl
+    public partial class Button : UserControl
     {
-        public RotateButton()
+        public Button()
         {
             InitializeComponent();
         }
     }
+    
+    
 }
