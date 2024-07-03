@@ -69,26 +69,26 @@ void ApiClient::handlingCommand(char *buffer)
         stop();
     }
 
-    if (buffer[0] == 0x30/*0x01*/) {
+    if (buffer[0] == 0x01) {
         sendOutputDevicesAvailable();
         return;
     }
-    if (buffer[0] == 0x31/*0x02*/) {
-        if (strlen(buffer) < 2/*5*/) {
+    if (buffer[0] == 0x02) {
+        if (strlen(buffer) < 2) {
             return;
         }
-        int num = atoi(&buffer[1]);
+        int num = static_cast<int>(static_cast<unsigned char>(buffer[1]));
         std::cout << "device requested : " << num << std::endl;
         char *response = new char[2] {0x02, static_cast<char>(num)};
         _audioEngine->changeOutputDevice(num);
         send(response);
         return;
     }
-    if (buffer[0] == 0x32/*0x05*/) {
-        if (strlen(buffer) < 2/*5*/) {
+    if (buffer[0] == 0x05) {
+        if (strlen(buffer) < 2) {
             return;
         }
-        int idEffect = atoi(&buffer[1]);
+        int idEffect = static_cast<int>(static_cast<unsigned char>(buffer[1]));
         std::cout << "Effect requested : " << idEffect << std::endl;
         for (auto &effect : _audioEngine->getEffects()) {
             if (effect->getId() == idEffect) {
@@ -100,12 +100,12 @@ void ApiClient::handlingCommand(char *buffer)
         }
         return;
     }
-    if (buffer[0] == 0x33/*0x06*/) {
+    if (buffer[0] == 0x06) {
         //set gain
-        if (strlen(buffer) < 2/*5*/) {
+        if (strlen(buffer) < 2) {
             return;
         }
-        float gain = atof(&buffer[1]);
+        float gain = static_cast<float>(buffer[1]);
         for (auto &effect : _audioEngine->getEffects()) {
             GainEffect *gainEffect = dynamic_cast<GainEffect *>(effect.get());
             if (gainEffect != nullptr) {
@@ -114,11 +114,11 @@ void ApiClient::handlingCommand(char *buffer)
             }
         }
     }
-    if (buffer[0] == 0x34/*0x07*/) {
-        if (strlen(buffer) < 2/*5*/) {
+    if (buffer[0] == 0x07) {
+        if (strlen(buffer) < 2) {
             return;
         }
-        short selectorReverb = atoi(&buffer[1]);
+        short selectorReverb = static_cast<short>(buffer[1]);
         for (auto &effect : _audioEngine->getEffects()) {
             ReverbEffect *reverbEffect = dynamic_cast<ReverbEffect *>(effect.get());
             if (reverbEffect != nullptr) {
@@ -127,11 +127,11 @@ void ApiClient::handlingCommand(char *buffer)
             }
         }
     }
-    if (buffer[0] == 0x35/*0x08*/) {
-        if (strlen(buffer) < 2/*5*/) {
+    if (buffer[0] == 0x08) {
+        if (strlen(buffer) < 2) {
             return;
         }
-        float selectorPan = atof(&buffer[1]);
+        float selectorPan = static_cast<float>(buffer[1]);
         for (auto &effect : _audioEngine->getEffects()) {
             PanEffect *panEffect = dynamic_cast<PanEffect *>(effect.get());
             if (panEffect != nullptr) {
@@ -140,18 +140,18 @@ void ApiClient::handlingCommand(char *buffer)
             }
         }
     }
-    if (buffer[0] == 0x36/*0x09*/) {
-        if (strlen(buffer) < 2/*5*/) {
+    if (buffer[0] == 0x09) {
+        if (strlen(buffer) < 2) {
             return;
         }
-        float volumeInputValue = atof(&buffer[1]);
+        float volumeInputValue = static_cast<float>(buffer[1]);
         _audioEngine->setVolumeInput(volumeInputValue);
     }
-    if (buffer[0] == 0x37/*0x0A*/) {
-        if (strlen(buffer) < 2/*5*/) {
+    if (buffer[0] == 0x0A) {
+        if (strlen(buffer) < 2) {
             return;
         }
-        float volumeOutputValue = atof(&buffer[1]);
+        float volumeOutputValue = static_cast<float>(buffer[1]);
         _audioEngine->setVolumeOutput(volumeOutputValue);
     }
 }
