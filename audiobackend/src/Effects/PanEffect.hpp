@@ -38,6 +38,11 @@ class PanEffect : public AEffect {
         }
 
         void setPan(float pan) {
+            if (pan > 1.0f) {
+                pan = 1.0f;
+            } else if (pan < -1.0f) {
+                pan = -1.0f;
+            }
             this->_pan = pan;
             std::cout << "Pan set to " << pan << std::endl;
         }

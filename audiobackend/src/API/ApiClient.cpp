@@ -74,6 +74,9 @@ void ApiClient::handlingCommand(char *buffer)
         return;
     }
     if (buffer[0] == 0x31/*0x02*/) {
+        if (strlen(buffer) < 2/*5*/) {
+            return;
+        }
         int num = atoi(&buffer[1]);
         std::cout << "device requested : " << num << std::endl;
         char *response = new char[2] {0x02, static_cast<char>(num)};
@@ -82,6 +85,9 @@ void ApiClient::handlingCommand(char *buffer)
         return;
     }
     if (buffer[0] == 0x32/*0x05*/) {
+        if (strlen(buffer) < 2/*5*/) {
+            return;
+        }
         int idEffect = atoi(&buffer[1]);
         std::cout << "Effect requested : " << idEffect << std::endl;
         for (auto &effect : _audioEngine->getEffects()) {
@@ -96,6 +102,9 @@ void ApiClient::handlingCommand(char *buffer)
     }
     if (buffer[0] == 0x33/*0x06*/) {
         //set gain
+        if (strlen(buffer) < 2/*5*/) {
+            return;
+        }
         float gain = atof(&buffer[1]);
         for (auto &effect : _audioEngine->getEffects()) {
             GainEffect *gainEffect = dynamic_cast<GainEffect *>(effect.get());
@@ -106,6 +115,9 @@ void ApiClient::handlingCommand(char *buffer)
         }
     }
     if (buffer[0] == 0x34/*0x07*/) {
+        if (strlen(buffer) < 2/*5*/) {
+            return;
+        }
         short selectorReverb = atoi(&buffer[1]);
         for (auto &effect : _audioEngine->getEffects()) {
             ReverbEffect *reverbEffect = dynamic_cast<ReverbEffect *>(effect.get());
@@ -116,6 +128,9 @@ void ApiClient::handlingCommand(char *buffer)
         }
     }
     if (buffer[0] == 0x35/*0x08*/) {
+        if (strlen(buffer) < 2/*5*/) {
+            return;
+        }
         float selectorPan = atof(&buffer[1]);
         for (auto &effect : _audioEngine->getEffects()) {
             PanEffect *panEffect = dynamic_cast<PanEffect *>(effect.get());
@@ -126,10 +141,16 @@ void ApiClient::handlingCommand(char *buffer)
         }
     }
     if (buffer[0] == 0x36/*0x09*/) {
+        if (strlen(buffer) < 2/*5*/) {
+            return;
+        }
         float volumeInputValue = atof(&buffer[1]);
         _audioEngine->setVolumeInput(volumeInputValue);
     }
     if (buffer[0] == 0x37/*0x0A*/) {
+        if (strlen(buffer) < 2/*5*/) {
+            return;
+        }
         float volumeOutputValue = atof(&buffer[1]);
         _audioEngine->setVolumeOutput(volumeOutputValue);
     }
