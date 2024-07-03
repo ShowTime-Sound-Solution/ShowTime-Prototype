@@ -16,12 +16,6 @@ public class Client
     Thread _thread;
     private Dictionary<int, Action<byte[]>> _parseFunctions;
 
-    public ObservableCollection<KeyValuePair<int, string>> Devices
-    {
-        get;
-        private set;
-    } = new ObservableCollection<KeyValuePair<int, string>>();
-    
     public Client()
     {
         _serverSocket = new ServerSocket();
@@ -58,16 +52,28 @@ public class Client
         Dispatcher.UIThread.Invoke(
             () =>
             {
+                AvailableDeviceEventHandler handler = AvailableDeviceEvent;
+                
+                Dictionary<int, string> args = new Dictionary<int, string>();
                 string res = Encoding.ASCII.GetString(array);
-                Devices.Clear();
 
                 foreach (var line in res.Split('\n'))
                 {
                     string[] parts = line.Split(" - ");
                     if (parts.Length == 6)
-                        Devices.Add(new KeyValuePair<int, string>(int.Parse(parts[0]), parts[2]));
+                        args.Add(int.Parse(parts[0]), parts[2]);
                 }
 
+                handler(this, args);
             });
     }
+    
+    public event AvailableDeviceEventHandler AvailableDeviceEvent;
+}
+
+public delegate void AvailableDeviceEventHandler(object sender, Dictionary<int, string> args);
+
+public class AvailableDeviceEventHandlerArgs : EventArgs
+{
+    public Dictionary<int, string> Devices { get; set; }
 }

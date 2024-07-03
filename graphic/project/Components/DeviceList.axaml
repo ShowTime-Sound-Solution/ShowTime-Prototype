@@ -5,7 +5,7 @@
         x:Class="project.Components.DeviceList"
         x:DataType="components:DeviceList">
         <Panel>
-                <DataGrid Name="DeviceGrid" AutoGenerateColumns="True" Loaded="DeviceGrid_OnLoaded" HeadersVisibility="None">
+                <DataGrid Name="DeviceGrid" AutoGenerateColumns="True" HeadersVisibility="None">
                 </DataGrid>
                 <Button Click="RefreshButton_OnClick">
                         <TextBlock Text="Refresh"></TextBlock>

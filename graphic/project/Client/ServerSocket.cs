@@ -70,7 +70,6 @@ public class ServerSocket
             Array.Fill(_buffer, byte.MinValue);
             _client.Receive(_buffer);
             _callback(_buffer);
-            // Console.WriteLine(Encoding.ASCII.GetString(_buffer));
         }
     }
     
