@@ -60,8 +60,9 @@ public partial class MainWindow : Window
     
     private void OnRunSimulation(object? sender, byte[] buffer)
     {
-        var decibels = buffer.Max(x => Math.Abs(x));
+        var decibels = buffer.Max(x => Math.Abs(x)) * 200;
 
+        Console.WriteLine(decibels);
         InitRoom(_room);
         AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, decibels);
         // Add a wall in the room

@@ -94,10 +94,10 @@ int AudioEngine::input(void *outputBuffer, void *inputBuffer, unsigned int nBuff
     float *in = (float *)inputBuffer;
     float *out = (float *)outputBuffer;
     engine->applyVolumeInput(in, nBufferFrames * 2);
-    //engine->getApiClient()->sendInputBuffer((char *)in);
+    engine->getApiClient()->sendInputBuffer((char *)in);
     engine->processEffects(in, out, nBufferFrames);
     engine->applyVolumeOutput(out, nBufferFrames * 2);
-    //engine->getApiClient()->sendOutputBuffer((char *)out);
+    engine->getApiClient()->sendOutputBuffer((char *)out);
     return 0;
 }
 
