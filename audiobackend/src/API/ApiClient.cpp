@@ -105,7 +105,11 @@ void ApiClient::handlingCommand(char *buffer)
         if (strlen(buffer) < 2) {
             return;
         }
-        float gain = static_cast<float>(buffer[1]);
+        char *tmp = new char[4] {0};
+        for (int i = 0; i < 4; i++) {
+            tmp[i] = buffer[i + 1];
+        }
+        float gain = *reinterpret_cast<float *>(tmp);
         for (auto &effect : _audioEngine->getEffects()) {
             GainEffect *gainEffect = dynamic_cast<GainEffect *>(effect.get());
             if (gainEffect != nullptr) {

@@ -21,6 +21,9 @@ namespace project.Components
             _rotatableComponent = this.FindControl<Components.Button>("GainButtonRotate");
             _rotatableComponent.PointerPressed += RotatableComponent_PointerPressed;
             _rotatableComponent.PointerMoved += RotatableComponent_PointerMoved;
+            
+            RotateTransform rotateTransform = new RotateTransform(-90, 0, 0);
+            _rotatableComponent.RenderTransform = rotateTransform;
         }
 
         private void RotatableComponent_PointerPressed(object sender, PointerPressedEventArgs e)
@@ -39,14 +42,19 @@ namespace project.Components
                 _currentAngle += angleDelta;
                 Console.WriteLine(_currentAngle);
                 
-                if (_currentAngle < -95)
-                    _currentAngle = -95;
-                else if (_currentAngle > 95)
-                    _currentAngle = 95; // 190° pour les 19 de bass
+                if (_currentAngle < -90)
+                    _currentAngle = -90;
+                else if (_currentAngle > 90)
+                    _currentAngle = 90; // 190° pour les 19 de bass
                 
                 RotateTransform rotateTransform = new RotateTransform(_currentAngle, 0, 0);
                 _rotatableComponent.RenderTransform = rotateTransform;
                 _previousMousePosition = currentPosition;
+                //-90 is 1 gain, 90 is 10 gain
+                var gain = (_currentAngle + 90) / 180 * 9 + 1;
+                var gainFloat = (float) gain;
+                
+                MainWindow.Client.SendGainValue(gainFloat);
             }
         }
     }

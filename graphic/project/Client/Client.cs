@@ -105,6 +105,11 @@ public class Client
         _serverSocket.Send(new byte[] {0x0A}.Concat(BitConverter.GetBytes(value)).ToArray());
     }
     
+    public void SendGainValue(float value)
+    {
+        _serverSocket.Send(new byte[] {0x06}.Concat(BitConverter.GetBytes(value)).ToArray());
+    }
+    
     public event AvailableDeviceEventHandler AvailableDeviceEvent;
     public event AudioBufferEventHandler AudioBufferEvent;
 }
