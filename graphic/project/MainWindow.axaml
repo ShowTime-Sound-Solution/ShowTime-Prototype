@@ -87,9 +87,7 @@
                             <ColumnDefinition Width="59*"/>
                             <ColumnDefinition Width="721*"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="1" Background="Blue">
-                                
-                        </Grid>
+                        <Image Grid.Column="1" Name="SimulationImage" Width="721" Height="721"/>
                     </Grid>
                 </Grid>
                 <Grid Grid.Column="1">
