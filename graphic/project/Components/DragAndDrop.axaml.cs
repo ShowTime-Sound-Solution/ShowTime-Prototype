@@ -6,7 +6,7 @@ using Avalonia.Markup.Xaml;
 using System;
 using Avalonia.Controls.Shapes;
 
-namespace project
+namespace project.Components
 {
     public partial class DragAndDrop : UserControl
     {

@@ -1,6 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="project.RotateButton">
+             x:Class="project.Components.RotateButton">
     <Panel Height="87" Width="87">
         <Ellipse  Width="87"
                   Height="87"

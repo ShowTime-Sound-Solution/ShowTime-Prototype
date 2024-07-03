@@ -189,7 +189,7 @@
                                         <TextBlock TextAlignment="Center" FontSize="20"> Pan </TextBlock>
                                     </Grid>
                                     <Grid Grid.Row="3">
-                                        <project:RotateButton />
+                                        <components:RotateButton />
                                     </Grid>
                                 </Grid>
                                 <Grid Grid.Column="3">
@@ -205,7 +205,7 @@
                                     </Grid>
 
                                     <Grid Grid.Row="3">
-                                        <project:RotateButton />
+                                        <components:RotateButton />
                                     </Grid>
                                 </Grid>
                             </Grid>
