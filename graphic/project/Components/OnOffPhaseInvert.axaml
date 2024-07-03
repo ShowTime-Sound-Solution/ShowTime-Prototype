@@ -1,0 +1,8 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="clr-namespace:project.Components"
+             x:Class="project.Components.OnOffPhaseInvert">
+    <Panel Height="87" Width="87">
+        <Ellipse Width="20" Height="20" Fill="Red" x:Name="OnOffPhaseInvertButton"></Ellipse>
+    </Panel>
+</UserControl>
