@@ -4,11 +4,15 @@
         xmlns:project="clr-namespace:project"
         x:Class="project.Components.DeviceList"
         x:DataType="components:DeviceList">
-        <Panel>
-                <DataGrid Name="DeviceGrid" AutoGenerateColumns="True" HeadersVisibility="None" SelectionChanged="DeviceGrid_OnSelectionChanged">
+        <Grid>
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="10*" />
+                        <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="0" Name="DeviceGrid" AutoGenerateColumns="True" HeadersVisibility="None" SelectionChanged="DeviceGrid_OnSelectionChanged">
                 </DataGrid>
-                <Button Click="RefreshButton_OnClick">
+                <Button Grid.Row="1" Click="RefreshButton_OnClick">
                         <TextBlock Text="Refresh"></TextBlock>
                 </Button>
-        </Panel>
+        </Grid>
 </UserControl>
