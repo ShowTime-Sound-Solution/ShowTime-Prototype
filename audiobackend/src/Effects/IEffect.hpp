@@ -11,4 +11,5 @@ class IEffect {
     protected:
         unsigned short _id = 0;
         bool _enabled = false;
+        std::string _name;
 };

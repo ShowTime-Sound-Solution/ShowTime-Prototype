@@ -9,6 +9,7 @@ class PhaseInverterEffect : public AEffect {
     public:
         explicit PhaseInverterEffect(unsigned short const id) {
             setId(id);
+            _name = "PhaseInverter";
         }
 
         void process(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) override {

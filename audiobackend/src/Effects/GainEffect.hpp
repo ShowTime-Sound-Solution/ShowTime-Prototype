@@ -9,6 +9,7 @@ class GainEffect : public AEffect {
     public:
         explicit GainEffect(unsigned short const id) {
             setId(id);
+            _name = "Gain";
         }
 
         void process(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) override {
@@ -36,6 +37,8 @@ class GainEffect : public AEffect {
         [[nodiscard]] float getGain() const {
             return _gain;
         }
+
+
 
     private:
         float _gain = 0.3f;

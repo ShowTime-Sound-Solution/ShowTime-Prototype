@@ -181,3 +181,18 @@ char *AudioEngine::getOutputDevicesAvailable() {
     }
     return buffer;
 }
+
+char *AudioEngine::getEffectsAvailable()
+{
+    auto buffer = new char[1024];
+    memset(buffer, 0, 1024);
+    for (auto &effect : effects) {
+        strcat(buffer, std::to_string(effect->getId()).c_str());
+        strcat(buffer, " - ");
+        strcat(buffer, effect->getName().c_str());
+        strcat(buffer, " - ");
+        strcat(buffer, effect->isEnabled() ? "enabled" : "disabled");
+        strcat(buffer, "\n");
+    }
+    return buffer;
+}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -16,6 +17,8 @@ public class ServerSocket
     private Socket _listener;
     private Socket _client;
     private byte[] _buffer = new byte[1024];
+    private Action<byte[]> _callback;
+    
     public bool Connected { get; set; } = false;
     
     public ServerSocket()
@@ -35,6 +38,11 @@ public class ServerSocket
         _localEndPoint = new IPEndPoint(_ipAddr, 6942);
     }
 
+    public void SetReceiveCallback(Action<byte[]> callback)
+    {
+        _callback = callback;
+    }
+    
     public void Start()
     {
         _listener = new Socket(_ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -61,7 +69,8 @@ public class ServerSocket
         {
             Array.Fill(_buffer, byte.MinValue);
             _client.Receive(_buffer);
-            Console.WriteLine(Encoding.ASCII.GetString(_buffer));
+            _callback(_buffer);
+            // Console.WriteLine(Encoding.ASCII.GetString(_buffer));
         }
     }
     

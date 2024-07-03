@@ -22,4 +22,8 @@ class AEffect : public IEffect {
         [[nodiscard]] bool isEnabled() const {
             return _enabled;
         }
+
+        [[nodiscard]] std::string getName() const {
+            return _name;
+        }
 };
