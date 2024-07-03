@@ -11,6 +11,7 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using project.Client;
 
 namespace project.Components;
 
@@ -31,24 +32,18 @@ public partial class DeviceList : UserControl
         var grid = this.FindControl<DataGrid>("DeviceGrid");
         
         
-        
-        MainWindow.Client.Devices.CollectionChanged += CollChanged;
+     
+        MainWindow.Client.AvailableDeviceEvent += ClientOnAvailableDeviceEvent;
     }
-    
-    private void CollChanged(object? sender, NotifyCollectionChangedEventArgs e)
+
+    private void ClientOnAvailableDeviceEvent(object sender, Dictionary<int, string> args)
     {
-        this.FindControl<DataGrid>("DeviceGrid").ItemsSource = MainWindow.Client.Devices.ToDictionary(x => x.Key, x => x.Value);
+        this.FindControl<DataGrid>("DeviceGrid").ItemsSource = args;
     }
-    
+
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
-    }
-
-    private void DeviceGrid_OnLoaded(object? sender, RoutedEventArgs e)
-    {
-        this.FindControl<DataGrid>("DeviceGrid").ItemsSource = MainWindow.Client.Devices;
-
     }
 
     private void RefreshButton_OnClick(object? sender, RoutedEventArgs e)
