@@ -40,14 +40,20 @@ namespace project.Components
                 _currentAngle += angleDelta;
                 Console.WriteLine(_currentAngle);
                 
-                if (_currentAngle < -95)
-                    _currentAngle = -95;
-                else if (_currentAngle > 95)
-                    _currentAngle = 95; // 190° pour les 19 de bass
+                if (_currentAngle < -90)
+                    _currentAngle = -90;
+                else if (_currentAngle > 90)
+                    _currentAngle = 90; // 190° pour les 19 de bass
                 
                 RotateTransform rotateTransform = new RotateTransform(_currentAngle, 0, 0);
                 _rotatableComponent.RenderTransform = rotateTransform;
                 _previousMousePosition = currentPosition;
+                
+                // -90 is -1 pan, 90 is 1 pan
+                var pan = _currentAngle / 90 * -1;
+                var panFloat = (float) pan;
+                
+                MainWindow.Client.SendPanValue(panFloat);
             }
         }
     }

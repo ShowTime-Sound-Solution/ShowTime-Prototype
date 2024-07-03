@@ -135,7 +135,11 @@ void ApiClient::handlingCommand(char *buffer)
         if (strlen(buffer) < 2) {
             return;
         }
-        float selectorPan = static_cast<float>(buffer[1]);
+        char *tmp = new char[4] {0};
+        for (int i = 0; i < 4; i++) {
+            tmp[i] = buffer[i + 1];
+        }
+        float selectorPan = *reinterpret_cast<float *>(tmp);
         for (auto &effect : _audioEngine->getEffects()) {
             PanEffect *panEffect = dynamic_cast<PanEffect *>(effect.get());
             if (panEffect != nullptr) {

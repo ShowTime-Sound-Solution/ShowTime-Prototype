@@ -110,6 +110,11 @@ public class Client
         _serverSocket.Send(new byte[] {0x06}.Concat(BitConverter.GetBytes(value)).ToArray());
     }
     
+    public void SendPanValue(float value)
+    {
+        _serverSocket.Send(new byte[] {0x08}.Concat(BitConverter.GetBytes(value)).ToArray());
+    }
+    
     public event AvailableDeviceEventHandler AvailableDeviceEvent;
     public event AudioBufferEventHandler AudioBufferEvent;
 }
