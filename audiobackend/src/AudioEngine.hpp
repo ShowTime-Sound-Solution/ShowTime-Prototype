@@ -36,6 +36,18 @@ class AudioEngine {
             return _apiClient;
         }
 
+        void applyVolumeInput(float *inputBuffer, unsigned int nBufferFrames);
+
+        void applyVolumeOutput(float *outputBuffer, unsigned int nBufferFrames);
+
+        void setVolumeInput(float volume) {
+            volumeInput = volume;
+        }
+
+        void setVolumeOutput(float volume) {
+            volumeOutput = volume;
+        }
+
     private:
         #ifdef __linux__
             RtAudio adc = RtAudio(RtAudio::Api::LINUX_PULSE);
@@ -48,6 +60,9 @@ class AudioEngine {
 
         unsigned int bufferFrames = 512;
         unsigned int sampleRate = 44100;
+
+        float volumeInput = 1.0f;
+        float volumeOutput = 1.0f;
 
         std::vector<std::unique_ptr<AEffect>> effects;
 

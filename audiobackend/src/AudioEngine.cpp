@@ -93,8 +93,10 @@ int AudioEngine::input(void *outputBuffer, void *inputBuffer, unsigned int nBuff
     AudioEngine *engine = (AudioEngine *)userData;
     float *in = (float *)inputBuffer;
     float *out = (float *)outputBuffer;
+    engine->applyVolumeInput(in, nBufferFrames * 2);
     //engine->getApiClient()->sendInputBuffer((char *)in);
     engine->processEffects(in, out, nBufferFrames);
+    engine->applyVolumeOutput(out, nBufferFrames * 2);
     //engine->getApiClient()->sendOutputBuffer((char *)out);
     return 0;
 }
@@ -144,6 +146,18 @@ void AudioEngine::processEffects(float *inputBuffer, float *outputBuffer, unsign
 
 std::vector<std::unique_ptr<AEffect>> &AudioEngine::getEffects() {
     return effects;
+}
+
+void AudioEngine::applyVolumeInput(float *inputBuffer, unsigned int nBufferFrames) {
+    for (unsigned int i = 0; i < nBufferFrames; i++) {
+        inputBuffer[i] *= volumeInput;
+    }
+}
+
+void AudioEngine::applyVolumeOutput(float *outputBuffer, unsigned int nBufferFrames) {
+    for (unsigned int i = 0; i < nBufferFrames; i++) {
+        outputBuffer[i] *= volumeOutput;
+    }
 }
 
 char *AudioEngine::getOutputDevicesAvailable() {

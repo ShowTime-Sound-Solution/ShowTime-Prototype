@@ -125,6 +125,14 @@ void ApiClient::handlingCommand(char *buffer)
             }
         }
     }
+    if (buffer[0] == 0x36/*0x09*/) {
+        float volumeInputValue = atof(&buffer[1]);
+        _audioEngine->setVolumeInput(volumeInputValue);
+    }
+    if (buffer[0] == 0x37/*0x0A*/) {
+        float volumeOutputValue = atof(&buffer[1]);
+        _audioEngine->setVolumeOutput(volumeOutputValue);
+    }
 }
 
 void ApiClient::sendOutputDevicesAvailable()
