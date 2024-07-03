@@ -33,6 +33,7 @@ AudioEngine::~AudioEngine() {
     if (adc.isStreamOpen()) {
         adc.closeStream();
     }
+    system("pactl unload-module module-null-sink");
 }
 
 void AudioEngine::findShowTimeVirtualDevice() {
@@ -92,9 +93,11 @@ int AudioEngine::input(void *outputBuffer, void *inputBuffer, unsigned int nBuff
     AudioEngine *engine = (AudioEngine *)userData;
     float *in = (float *)inputBuffer;
     float *out = (float *)outputBuffer;
-    engine->getApiClient()->sendInputBuffer((char *)in);
+    engine->applyVolumeInput(in, nBufferFrames * 2);
+    //engine->getApiClient()->sendInputBuffer((char *)in);
     engine->processEffects(in, out, nBufferFrames);
-    engine->getApiClient()->sendOutputBuffer((char *)out);
+    engine->applyVolumeOutput(out, nBufferFrames * 2);
+    //engine->getApiClient()->sendOutputBuffer((char *)out);
     return 0;
 }
 
@@ -123,6 +126,10 @@ void AudioEngine::changeOutputDevice(int numDevice) {
 void AudioEngine::loadEffects() {
     effects.push_back(std::make_unique<GainEffect>(0));
     effects.push_back(std::make_unique<PhaseInverterEffect>(1));
+    effects.push_back(std::make_unique<EqualizerEffect>(2));
+    effects.push_back(std::make_unique<ReverbEffect>(3));
+    //effects.push_back(std::make_unique<EqualizerEffect>(2));
+    effects.push_back(std::make_unique<PanEffect>(4));
 }
 
 void AudioEngine::processEffects(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) {
@@ -139,6 +146,18 @@ void AudioEngine::processEffects(float *inputBuffer, float *outputBuffer, unsign
 
 std::vector<std::unique_ptr<AEffect>> &AudioEngine::getEffects() {
     return effects;
+}
+
+void AudioEngine::applyVolumeInput(float *inputBuffer, unsigned int nBufferFrames) {
+    for (unsigned int i = 0; i < nBufferFrames; i++) {
+        inputBuffer[i] *= volumeInput;
+    }
+}
+
+void AudioEngine::applyVolumeOutput(float *outputBuffer, unsigned int nBufferFrames) {
+    for (unsigned int i = 0; i < nBufferFrames; i++) {
+        outputBuffer[i] *= volumeOutput;
+    }
 }
 
 char *AudioEngine::getOutputDevicesAvailable() {

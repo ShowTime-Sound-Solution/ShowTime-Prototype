@@ -25,6 +25,11 @@ class GainEffect : public AEffect {
         }
 
         void setGain(float gain) {
+            if (gain < 0.0f) {
+                gain = 0.0f;
+            } else if (gain > 10.0f) {
+                gain = 10.0f;
+            }
             this->_gain = gain;
             std::cout << "Gain set to " << gain << std::endl;
         }
