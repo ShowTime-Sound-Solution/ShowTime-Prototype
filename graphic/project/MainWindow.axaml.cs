@@ -62,15 +62,21 @@ public partial class MainWindow : Window
     {
         if (buffer.Length < 4)
             return;
-        var floats = new float[512];
+        var floatsLeft = new float[512 / 2];
+        var floatsRight = new float[512 / 2];
         for (var i = 0; i < 512; i++)
         {
-            floats[i] = BitConverter.ToSingle(buffer, i * 4);
+            if (i % 2 == 0)
+                floatsLeft[i / 2] = BitConverter.ToSingle(buffer, i * 4);
+            else
+                floatsRight[i / 2] = BitConverter.ToSingle(buffer, i * 4);
         }
-        var decibels = floats.Max(x => Math.Abs(x)) * 300;
-        if (decibels > 300)
+        var decibelsLeft = floatsLeft.Max(x => Math.Abs(x)) * 100;
+        var decibelsRight = floatsRight.Max(x => Math.Abs(x)) * 100;
+        if (decibelsLeft > 300)
             return;
-        
+        if (decibelsRight > 300)
+            return;        
         /*foreach (var x in buffer)
         {
             floats[x] = BitConverter.ToSingle(buffer, x);
@@ -81,7 +87,8 @@ public partial class MainWindow : Window
         //decibels = Math.Max(0.001f, Math.Min(decibels, 300));
         //Console.WriteLine(decibels);
         InitRoom(_room);
-        AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, decibels);
+        AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, decibelsRight);
+        AddAudioSource(RoomHeight / 2, RoomWidth / 3, decibelsLeft);
         // Add a wall in the room
         for (var i = 0; i < RoomHeight / 2; i++)
             _room[RoomHeight / 4 + i, RoomWidth / 4] = new Box { Type = BoxType.Wall };
