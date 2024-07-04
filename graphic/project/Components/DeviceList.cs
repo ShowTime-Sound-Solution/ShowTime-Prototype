@@ -1,17 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using project.Client;
 
 namespace project.Components;
 
@@ -38,7 +30,7 @@ public partial class DeviceList : UserControl
 
     private void ClientOnAvailableDeviceEvent(object sender, Dictionary<int, string> args)
     {
-        this.FindControl<DataGrid>("DeviceGrid").ItemsSource = args;
+        this.FindControl<DataGrid>("DeviceGrid")!.ItemsSource = args;
     }
 
     private void InitializeComponent()
