@@ -128,16 +128,17 @@ public partial class MainWindow : Window
         //decibels = Math.Max(0.001f, Math.Min(decibels, 300));
         //Console.WriteLine(decibels);
 
-        _buffers.Enqueue(decibels);
-        if (_buffers.Count > 10)
-            _buffers.Dequeue();
+        _buffersLeft.Enqueue(decibelsLeft);
+        _buffersRight.Enqueue(decibelsRight);
+        if (_buffersLeft.Count > 5)
+            _buffersLeft.Dequeue();
+        if (_buffersRight.Count > 5)
+            _buffersRight.Dequeue();
         foreach (var box in _room)
             box.Decibels = 0;
-        foreach (var source in _audioSources)
-            _room[source.Item1, source.Item2].Decibels = _buffers.Average();
         
-        _room[_audioSources[0].Item1, _audioSources[0].Item2].Decibels = decibelsRight;
-        _room[_audioSources[1].Item1, _audioSources[1].Item2].Decibels = decibelsLeft;
+        _room[_audioSources[0].Item1, _audioSources[0].Item2].Decibels = _buffersRight.Average();
+        _room[_audioSources[1].Item1, _audioSources[1].Item2].Decibels = _buffersLeft.Average();
         
         PropagateSound();
         DrawRoom();
@@ -261,7 +262,8 @@ public partial class MainWindow : Window
     private readonly List<Tuple<int, int>> _audioSources = [];
 
     private readonly byte[] _pixels = new byte[RoomSize * RoomSize * 4];
-    private readonly Queue<float> _buffers = [];
+    private readonly Queue<float> _buffersLeft = [];
+    private readonly Queue<float> _buffersRight = [];
 
     private double _maxDecibels = 1;
     private double _minDecibels;
