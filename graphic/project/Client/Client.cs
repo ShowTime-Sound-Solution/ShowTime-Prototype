@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
-using Avalonia;
 using Avalonia.Threading;
 
 namespace project.Client;
@@ -131,8 +128,3 @@ public class Client
 
 public delegate void AvailableDeviceEventHandler(object sender, Dictionary<int, string> args);
 public delegate void AudioBufferEventHandler(object sender, byte[] buffer);
-
-public class AvailableDeviceEventHandlerArgs : EventArgs
-{
-    public Dictionary<int, string> Devices { get; set; }
-}
