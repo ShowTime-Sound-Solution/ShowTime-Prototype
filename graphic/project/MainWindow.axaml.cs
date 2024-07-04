@@ -128,21 +128,17 @@ public partial class MainWindow : Window
         //decibels = Math.Max(0.001f, Math.Min(decibels, 300));
         //Console.WriteLine(decibels);
 
+        _buffers.Enqueue(decibels);
+        if (_buffers.Count > 10)
+            _buffers.Dequeue();
         foreach (var box in _room)
             box.Decibels = 0;
+        foreach (var source in _audioSources)
+            _room[source.Item1, source.Item2].Decibels = _buffers.Average();
         
         _room[_audioSources[0].Item1, _audioSources[0].Item2].Decibels = decibelsRight;
         _room[_audioSources[1].Item1, _audioSources[1].Item2].Decibels = decibelsLeft;
-        // Add a wall in the room
-        for (var i = 0; i < RoomHeight / 2; i++)
-            _room[RoomHeight / 4 + i, RoomWidth / 4] = new Box { Type = BoxType.Wall };
-        for (var i = 0; i < RoomWidth / 4; i++)
-            _room[RoomWidth / 4, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
-        for (var i = 0; i < RoomWidth / 4; i++)
-            _room[RoomWidth / 4 * 3 - 1, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
-        for (var i = 0; i < RoomHeight / 2; i++)
-            _room[RoomHeight / 4 + i, RoomWidth / 4 * 3] = new Box { Type = BoxType.Wall };
-
+        
         PropagateSound();
         DrawRoom();
     }
@@ -265,6 +261,7 @@ public partial class MainWindow : Window
     private readonly List<Tuple<int, int>> _audioSources = [];
 
     private readonly byte[] _pixels = new byte[RoomSize * RoomSize * 4];
+    private readonly Queue<float> _buffers = [];
 
     private double _maxDecibels = 1;
     private double _minDecibels;
