@@ -111,10 +111,13 @@ public partial class MainWindow : Window
         if (decibels > 300)
             return;
 
+        _buffers.Enqueue(decibels);
+        if (_buffers.Count > 10)
+            _buffers.Dequeue();
         foreach (var box in _room)
             box.Decibels = 0;
         foreach (var source in _audioSources)
-            _room[source.Item1, source.Item2].Decibels = decibels;
+            _room[source.Item1, source.Item2].Decibels = _buffers.Average();
 
         PropagateSound();
         DrawRoom();
@@ -238,6 +241,7 @@ public partial class MainWindow : Window
     private readonly List<Tuple<int, int>> _audioSources = [];
 
     private readonly byte[] _pixels = new byte[RoomSize * RoomSize * 4];
+    private readonly Queue<float> _buffers = [];
 
     private double _maxDecibels = 1;
     private double _minDecibels;
