@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Platform;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
@@ -63,17 +64,38 @@ public partial class MainWindow : Window
             _room[i, j] = new Box();
 
         // Add walls in the room
-        for (var i = 0; i < RoomHeight / 2; i++)
-            _room[RoomHeight / 4 + i, RoomWidth / 4] = new Box { Type = BoxType.Wall };
-        for (var i = 0; i < RoomWidth / 4; i++)
-            _room[RoomWidth / 4, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
-        for (var i = 0; i < RoomWidth / 4; i++)
-            _room[RoomWidth / 4 * 3 - 1, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
-        for (var i = 0; i < RoomHeight / 2; i++)
-            _room[RoomHeight / 4 + i, RoomWidth / 4 * 3] = new Box { Type = BoxType.Wall };
+        SelectLayout(1);
 
         AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, 0);
         AddAudioSource(RoomHeight / 2, RoomWidth / 3, 0);
+        DrawRoom();
+    }
+
+    private void SelectLayout(int index)
+    {
+        switch (index)
+        {
+            case 1:
+                for (var i = 0; i < RoomHeight / 2; i++)
+                    _room[RoomHeight / 4 + i, RoomWidth / 4] = new Box { Type = BoxType.Wall };
+                for (var i = 0; i < RoomWidth / 4; i++)
+                    _room[RoomWidth / 4, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
+                for (var i = 0; i < RoomWidth / 4; i++)
+                    _room[RoomWidth / 4 * 3 - 1, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
+                for (var i = 0; i < RoomHeight / 2; i++)
+                    _room[RoomHeight / 4 + i, RoomWidth / 4 * 3] = new Box { Type = BoxType.Wall };
+                break;
+            case 2:
+                for (var i = 0; i < RoomHeight / 2; i++)
+                    _room[RoomHeight / 4 + i, RoomWidth / 4] = new Box { Type = BoxType.Air };
+                for (var i = 0; i < RoomWidth / 4; i++)
+                    _room[RoomWidth / 4, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
+                for (var i = 0; i < RoomWidth / 4; i++)
+                    _room[RoomWidth / 4 * 3 - 1, RoomHeight / 2 + i] = new Box { Type = BoxType.Wall };
+                for (var i = 0; i < RoomHeight / 2; i++)
+                    _room[RoomHeight / 4 + i, RoomWidth / 4 * 3] = new Box { Type = BoxType.Wall };
+                break;
+        }
         DrawRoom();
     }
 
@@ -246,6 +268,14 @@ public partial class MainWindow : Window
 
     private double _maxDecibels = 1;
     private double _minDecibels;
+
+    private void ChangeScene(object? sender, RoutedEventArgs e)
+    {
+        var button = ( sender as Button )!;
+        var value = int.Parse(button.Name![6].ToString());
+        
+        SelectLayout(value);
+    }
 }
 
 public class Box
