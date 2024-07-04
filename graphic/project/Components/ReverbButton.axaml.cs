@@ -19,6 +19,7 @@ namespace project.Components
         {
             InitializeComponent();
             
+            _currentAngle = -90;
             _rotatableComponent = this.FindControl<Components.Button>("ReverbButtonRotate");
             _rotatableComponent.PointerPressed += RotatableComponent_PointerPressed;
             _rotatableComponent.PointerMoved += RotatableComponent_PointerMoved;

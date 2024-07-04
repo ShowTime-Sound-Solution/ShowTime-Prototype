@@ -3,6 +3,6 @@
              xmlns:components="clr-namespace:project.Components"
              x:Class="project.Components.OnOffPan">
     <Panel Height="87" Width="87">
-        <Ellipse Width="20" Height="20" Fill="Red"></Ellipse>
+        <Ellipse Width="20" Height="20" Fill="Red" x:Name="OnOffPanButton"></Ellipse>
     </Panel>
 </UserControl>

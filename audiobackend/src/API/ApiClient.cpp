@@ -88,7 +88,11 @@ void ApiClient::handlingCommand(char *buffer)
         if (strlen(buffer) < 2) {
             return;
         }
-        int idEffect = static_cast<int>(static_cast<unsigned char>(buffer[1]));
+        char *tmp = new char[4] {0};
+        for (int i = 0; i < 4; i++) {
+            tmp[i] = buffer[i + 1];
+        }
+        int idEffect = *reinterpret_cast<int *>(tmp);
         std::cout << "Effect requested : " << idEffect << std::endl;
         for (auto &effect : _audioEngine->getEffects()) {
             if (effect->getId() == idEffect) {

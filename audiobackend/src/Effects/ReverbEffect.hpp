@@ -13,7 +13,6 @@ class ReverbEffect : public AEffect {
 public:
     explicit ReverbEffect(unsigned short const id) {
         setId(id);
-        _enabled = true;
     }
 
     ~ReverbEffect() {

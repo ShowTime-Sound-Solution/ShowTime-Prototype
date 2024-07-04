@@ -3,6 +3,12 @@
              xmlns:components="clr-namespace:project.Components"
              x:Class="project.Components.ReverbButton">
     <Panel Height="87" Width="87">
-        <components:Button x:Name="ReverbButtonRotate" />
+        <components:Button x:Name="ReverbButtonRotate" RenderTransformOrigin="43.5, 43.5">
+            <components:Button.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="-90"/>
+                </TransformGroup>
+            </components:Button.RenderTransform>
+        </components:Button>
     </Panel>
 </UserControl>

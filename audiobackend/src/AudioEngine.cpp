@@ -124,12 +124,12 @@ void AudioEngine::changeOutputDevice(int numDevice) {
 }
 
 void AudioEngine::loadEffects() {
-    effects.push_back(std::make_unique<GainEffect>(0));
-    effects.push_back(std::make_unique<PhaseInverterEffect>(1));
-    effects.push_back(std::make_unique<EqualizerEffect>(2));
-    effects.push_back(std::make_unique<ReverbEffect>(3));
+    effects.push_back(std::make_unique<GainEffect>(1));
+    effects.push_back(std::make_unique<PhaseInverterEffect>(2));
+    effects.push_back(std::make_unique<EqualizerEffect>(3));
+    effects.push_back(std::make_unique<ReverbEffect>(4));
     //effects.push_back(std::make_unique<EqualizerEffect>(2));
-    effects.push_back(std::make_unique<PanEffect>(4));
+    effects.push_back(std::make_unique<PanEffect>(5));
 }
 
 void AudioEngine::processEffects(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) {

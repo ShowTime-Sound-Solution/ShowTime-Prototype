@@ -185,7 +185,7 @@
                                             <TextBlock Grid.Row="0" TextAlignment="Center" VerticalAlignment="Center" FontSize="20"> Phase </TextBlock>
                                             <TextBlock Grid.Row="1" TextAlignment="Center" VerticalAlignment="Center" FontSize="20"> Inverter </TextBlock>
                                         </Grid>
-                                        <components:OnOffReverb Grid.Column="1"/>
+                                        <components:OnOffPhaseInvert Grid.Column="1"/>
                                     </Grid>
                                 </Grid>
                                 <Grid Grid.Column="3">
@@ -231,7 +231,7 @@
                                             <ColumnDefinition Width="4*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" TextAlignment="Center" VerticalAlignment="Center" FontSize="20"> Pan </TextBlock>
-                                        <components:OnOffReverb Grid.Column="1"/>
+                                        <components:OnOffPan Grid.Column="1"/>
                                     </Grid>
                                     <Grid Grid.Row="3">
                                         <components:PanButton />
@@ -251,7 +251,7 @@
                                             <ColumnDefinition Width="4*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" TextAlignment="Center" VerticalAlignment="Center" FontSize="20"> Gain </TextBlock>
-                                        <components:OnOffReverb Grid.Column="1"/>
+                                        <components:OnOffGain Grid.Column="1"/>
                                     </Grid>
 
                                     <Grid Grid.Row="3">

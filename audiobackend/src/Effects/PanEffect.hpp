@@ -11,7 +11,6 @@ class PanEffect : public AEffect {
     public:
         explicit PanEffect(unsigned short const id) {
             setId(id);
-            _enabled = true;
         }
 
         void process(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) override {

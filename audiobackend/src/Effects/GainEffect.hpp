@@ -10,7 +10,6 @@ class GainEffect : public AEffect {
         explicit GainEffect(unsigned short const id) {
             setId(id);
             _name = "Gain";
-            _enabled = true;
         }
 
         void process(float *inputBuffer, float *outputBuffer, unsigned int nBufferFrames) override {

@@ -31,6 +31,7 @@ namespace project.Components
                 _isOn = false;
                 _button.Fill = Brushes.Red;
             }
+            MainWindow.Client.SendEnableEffect(4);
         }
 
     }

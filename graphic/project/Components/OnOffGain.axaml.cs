@@ -17,7 +17,7 @@ namespace project.Components
             
             _isOn = false;
             
-            _button = this.FindControl<Ellipse>("OnOffReverbButton");
+            _button = this.FindControl<Ellipse>("OnOffGainButton");
             _button.PointerPressed += SwitchingMode;
         }
 
@@ -33,6 +33,7 @@ namespace project.Components
                 _isOn = false;
                 _button.Fill = Brushes.Red;
             }
+            MainWindow.Client.SendEnableEffect(1);
         }
     }
 }
