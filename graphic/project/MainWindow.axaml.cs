@@ -73,6 +73,7 @@ public partial class MainWindow : Window
             _room[RoomHeight / 4 + i, RoomWidth / 4 * 3] = new Box { Type = BoxType.Wall };
 
         AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, 0);
+        AddAudioSource(RoomHeight / 2, RoomWidth / 3, 0);
         DrawRoom();
     }
 
@@ -104,8 +105,12 @@ public partial class MainWindow : Window
         
         //decibels = Math.Max(0.001f, Math.Min(decibels, 300));
         //Console.WriteLine(decibels);
-        AddAudioSource(RoomHeight / 2, RoomWidth / 3 * 2, decibelsRight);
-        AddAudioSource(RoomHeight / 2, RoomWidth / 3, decibelsLeft);
+
+        foreach (var box in _room)
+            box.Decibels = 0;
+        
+        _room[_audioSources[0].Item1, _audioSources[0].Item2].Decibels = decibelsRight;
+        _room[_audioSources[1].Item1, _audioSources[1].Item2].Decibels = decibelsLeft;
         // Add a wall in the room
         for (var i = 0; i < RoomHeight / 2; i++)
             _room[RoomHeight / 4 + i, RoomWidth / 4] = new Box { Type = BoxType.Wall };
