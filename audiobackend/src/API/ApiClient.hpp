@@ -35,7 +35,7 @@ class ApiClient {
 
         void sendOutputBuffer(float *buffer);
 
-        void sendInputBuffer(char *buffer);
+        void sendInputBuffer(float *buffer);
 
         void sendEffectsAvailable();
 
@@ -51,4 +51,5 @@ class ApiClient {
         void sendOutputDevicesAvailable();
 
         bool _sendOutput = false;
+        bool _sendInput = false;
 };

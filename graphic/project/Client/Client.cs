@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Avalonia.Threading;
+using project.Components;
 
 namespace project.Client;
 
@@ -16,7 +17,7 @@ public class Client
     public Client()
     {
         _serverSocket = new ServerSocket();
-        _parseFunctions = new Dictionary<int, Action<byte[]>>() {{0x01, ParseAvailableDevice}, {0x03, ParseAudioBuffer}};
+        _parseFunctions = new Dictionary<int, Action<byte[]>>() {{0x01, ParseAvailableDevice}, {0x03, ParseAudioBuffer}, {0x04, ParseInputBuffer}};
         
         _thread = new Thread(() =>
         {
@@ -87,8 +88,24 @@ public class Client
             () =>
             {
                 var handler = AudioBufferEvent;
+                var meeterOutputHandler = UpdateOutputMeterEventHandler;
 
                 handler(this, array);
+                meeterOutputHandler(this, array);
+
+            });
+    }
+    
+    private void ParseInputBuffer(byte[] array)
+    {
+
+        Dispatcher.UIThread.Invoke(
+            () =>
+            {
+                var handler = UpdateInputMeterEventHandler;
+
+                handler(this, array);
+
             });
     }
     
@@ -124,7 +141,14 @@ public class Client
     
     public event AvailableDeviceEventHandler AvailableDeviceEvent;
     public event AudioBufferEventHandler AudioBufferEvent;
+    
+    public event UpdateOutputMeterEventHandler UpdateOutputMeterEventHandler;
+    public event UpdateInputMeterEventHandler UpdateInputMeterEventHandler;
 }
 
 public delegate void AvailableDeviceEventHandler(object sender, Dictionary<int, string> args);
 public delegate void AudioBufferEventHandler(object sender, byte[] buffer);
+
+public delegate void UpdateOutputMeterEventHandler(object sender, byte[] buffer);
+
+public delegate void UpdateInputMeterEventHandler(object sender, byte[] buffer);

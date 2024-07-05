@@ -214,12 +214,16 @@ void ApiClient::sendOutputBuffer(float *buffer)
     delete[] result;
 }
 
-void ApiClient::sendInputBuffer(char *buffer)
+void ApiClient::sendInputBuffer(float *buffer)
 {
+    _sendInput = !_sendInput;
+    if (!_sendInput) {
+        return;
+    }
     char *result = new char[512 * 4 + 2] {0};
     result[0] = 0x04;
-    for (int i = 0; i < 512 * 4; i++) {
-        result[i + 1] = buffer[i];
+    for (int i = 0; i < 512; i++) {
+        memccpy(&result[i * 4 + 1], &buffer[i], 4, sizeof(float));
     }
     send(result);
     delete[] result;

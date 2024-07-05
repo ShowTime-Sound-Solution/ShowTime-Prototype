@@ -8,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
+using project.Client;
 
 namespace project;
 
@@ -102,6 +103,7 @@ public partial class MainWindow : Window
 
     private void OnRunSimulation(object? _, byte[] buffer)
     {
+
         if (buffer.Length < 4)
             return;
         var floatsLeft = new float[512 / 2];

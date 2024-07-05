@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="clr-namespace:project.Components"
+             x:Class="project.Components.MeeterOutput"
+             x:DataType="components:MeeterOutput"> <!-- Add this line -->
+    <UserControl.Resources>
+        <components:HalfValueConverterOut x:Key="HalfValueConverterOut"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.ColumnSpan="2" Source="avares://project/Assets/meeter.png" />
+        <Rectangle Fill="#000000" Height="{Binding LeftRectangleHeight}" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.5"
+                   Width="{Binding Path=Bounds.Width, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource HalfValueConverterOut}}" />
+        <Rectangle Grid.Column="1" Fill="#000000" Height="{Binding RightRectangleHeight}" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0.5"
+                   Width="{Binding Path=Bounds.Width, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource HalfValueConverterOut}}" />
+    </Grid>
+</UserControl>

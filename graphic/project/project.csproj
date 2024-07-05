@@ -19,6 +19,7 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets/showtimetitre.png" />
+        <AvaloniaResource Include="Assets/meeter.png" />
 
     </ItemGroup>
 
